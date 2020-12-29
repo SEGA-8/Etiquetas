@@ -74,7 +74,7 @@ Return
 MainGui(){
 global
 	Gui Main: New, +hWndhMainWnd
-	Gui Main:Add, Tab3, x8 y8 w224 h158, Serializador|Etiquetas
+	Gui Main:Add, Tab3, x7 y8 w225 h158 +AltSubmit v_Tab, Serializador|Etiquetas
 	Gui Main:Tab, 1
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
@@ -83,7 +83,6 @@ global
 	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_NumEtq
 	Gui Main:Add, Edit, x120 y88 w28 h20 v_Marca, N
 	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_NumEtqAnt
-	Gui Main:Add, StatusBar,, Fixalia electronic solutions.
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
@@ -93,8 +92,10 @@ global
 	Gui Main:Add, Edit, x90 y88 w55 h20 +Number v_NumIni
 	Gui Main:Add, Edit, x90 y128 w55 h20 +Number v_NumFin
 	Gui Main:Tab
-	Gui Main:Add, Button, x8 y170 w224 h24 gImprimir, &Imprimir
+	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
+	Gui Main:Add, StatusBar,, Fixalia Electronic Solutions.
+	SB_SetParts(180)
 
 	Gui Show, w240 h220, Generador de etiquetas
 	Gosub, LoadItems
@@ -128,9 +129,9 @@ Settings:
 		Gui SettingsDlg:Add, GroupBox, x7 y92 w106 h68, Printer
 		Gui SettingsDlg:Add, Text, x15 y108 w40 h20 +0x200, Speed:
 		Gui SettingsDlg:Add, Edit, x60 y108 w20 h20 +0x1 hWndhEdtspeed v_speed, 2
-		Gui SettingsDlg:Add, Text, x15 y130 w40 h20 +0x200, Density
+		Gui SettingsDlg:Add, Text, x15 y130 w40 h20 +0x200, Density:
 		Gui SettingsDlg:Add, Edit, x60 y130 w20 h20 +0x1 hWndhEdtdensity v_density, 6
-		Gui SettingsDlg:Add, GroupBox, x118 y72 w115 h88, Direction
+		Gui SettingsDlg:Add, GroupBox, x118 y72 w115 h88, Print direction
 		Gui SettingsDlg:Add, Radio, hWndhRdirection v_direction x129 y91 w64 h16, Normal
 		Gui SettingsDlg:Add, Radio, w64 h16, Inverse
 		Gui SettingsDlg:Add, Radio, w64 h16 +Disabled, Mirror
@@ -151,6 +152,12 @@ Settings:
 
 LoadItems:
 	;ControlSetText,, %width%, ahk_id %hEdtwidth%
+	;MainWindow
+	StStr:= "`t" . numEtqAnt
+	MsgBox %StStr%
+	SB_SetText(StStr,2)
+	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
+	;SettingsDlgWindow
 	GuiControl, Text, %hEdtwidth%, %width%
 	GuiControl, Text, %hEdtheight%, %height%
 	GuiControl, Text, %hEdtgap%, %gap%
@@ -158,7 +165,6 @@ LoadItems:
 	GuiControl, Text, %hEdtdensity%, %density%
 	GuiControl, Text, %hEdtdelay%, %delay%
 	GuiControl, Text, %hEdtdate%, %date%
-	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
 	GuiControl, Text, %hEdtxPos_0%, %xPos_0%
 	GuiControl, Text, %hEdtyPos_0%, %yPos_0%
 	GuiControl, Text, %hEdtxPos_1%, %xPos_1%
@@ -260,13 +266,12 @@ Return
 
 
 Setup:
-	Gui, Submit  ; Save each control's contents to its associated variable.
-	;MsgBox You entered:`n%Num%`n%Marca%`n%Cabecera%
+	Gui, Submit, NoHide  ; Save each control's contents to its associated variable.
 	Gosub, Settings
 Return
 
 SaveSettings:
-	Gui, %a_gui%: submit, Nohide
+	Gui, %a_gui%: submit, NoHide
 	Gui,Destroy
 
 	width:= _width
@@ -292,6 +297,10 @@ SaveSettings:
 	
 	Gui Main: Show
 	;Reload
+Return
+
+Imprimir:
+	;GuiControlGet, p, Sub-command, ControlID, Param4]
 Return
 
 SettingsDlgGuiClose:
