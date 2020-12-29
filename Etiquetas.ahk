@@ -64,8 +64,7 @@ Else
 
 
 offset:= 5
-tempFile := "DatosEtiqueta.txt"
-
+;tempFile := "DatosEtiqueta.txt"
 MainGui()
 
 Return                      
@@ -80,24 +79,25 @@ global
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
-	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Etiqueta anterior:
-	Gui Main:Add, Edit, vNum x130 y48 w32 h20 +Number
-	Gui Main:Add, Edit, vMarca x130 y88 w32 h20
-	Gui Main:Add, Edit, vEtiquetaAnt x130 y128 w80 h20 +Number
+	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
+	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_NumEtq
+	Gui Main:Add, Edit, x120 y88 w28 h20 v_Marca, N
+	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_NumEtqAnt
 	Gui Main:Add, StatusBar,, Fixalia electronic solutions.
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Final:
-	Gui Main:Add, Edit, vCabecera x130 y48 w80 h20
-	Gui Main:Add, Edit, vNumIni x130 y88 w64 h20 +Number
-	Gui Main:Add, Edit, vNumFin x130 y128 w64 h20 +Number
+	Gui Main:Add, Edit, x90 y48 w80 h20 vCabecera
+	Gui Main:Add, Edit, x90 y88 w55 h20 +Number v_NumIni
+	Gui Main:Add, Edit, x90 y128 w55 h20 +Number v_NumFin
 	Gui Main:Tab
-	Gui Main:Add, Button, x8 y170 w224 h24, &Imprimir
+	Gui Main:Add, Button, x8 y170 w224 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
 
 	Gui Show, w240 h220, Generador de etiquetas
+	Gosub, LoadItems
 Return
 }
 
@@ -142,6 +142,8 @@ Settings:
 		Gui SettingsDlg:Add, Button, gSaveSettings x68 y206 w80 h23, &Save
 		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
 		Gui SettingsDlg:Show, w240 h235, Settings
+
+		Gosub, LoadItems
 		;pause
 	}
 	Return
@@ -156,7 +158,7 @@ LoadItems:
 	GuiControl, Text, %hEdtdensity%, %density%
 	GuiControl, Text, %hEdtdelay%, %delay%
 	GuiControl, Text, %hEdtdate%, %date%
-	GuiControl, Text, %hEdtnumEtq%, %numEtq%
+	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
 	GuiControl, Text, %hEdtxPos_0%, %xPos_0%
 	GuiControl, Text, %hEdtyPos_0%, %yPos_0%
 	GuiControl, Text, %hEdtxPos_1%, %xPos_1%
@@ -180,7 +182,7 @@ return
 
 Iniread:
 If !FileExist(script.conf){
-	MsgBox,  no existe Configuración
+	MsgBox, ,Configuración, No existe archivo de configuración; se creará uno por defecto.,5
 	filename:= "Etiquetas.txt"
 	width:= "67.75 mm"
 	height:= "5 mm"
@@ -192,7 +194,7 @@ If !FileExist(script.conf){
 	etiqueta_1:= "000001"
 	delay:= "100"
 	date:= "2100008"
-	numEtq:= "10000"
+	numEtqAnt:= "00000001"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -222,15 +224,15 @@ If !FileExist(script.conf){
 	IniRead, speed ,% script.conf,Settings, speed
 	IniRead, density,% script.conf,Settings,density
 	IniRead, direction,% script.conf,Settings,direction
-	IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
-	IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
 	IniRead, delay,% script.conf,Settings,delay
 	IniRead, date,% script.conf,Settings,date
 	IniRead, xPos_0,% script.conf,Settings,xPos_0
 	IniRead, yPos_0,% script.conf,Settings,yPos_0
 	IniRead, xPos_1,% script.conf,Settings,xPos_1
 	IniRead, yPos_1,% script.conf,Settings,yPos_1
-	IniRead, numEtq,% script.conf,Temp,numEtq
+	IniRead, numEtqAnt,% script.conf,Temp,numEtq
+	IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
+	IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
 
 return
 
@@ -250,7 +252,7 @@ Iniwrite:
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
 	FileAppend, `n, % script.conf
-	IniWrite, %numEtq%, % script.conf, Temp, numEtq
+	IniWrite, %numEtqAnt%, % script.conf, Temp, numEtq
 	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
 	IniWrite, %etiqueta_1%, % script.conf, Temp, etiqueta_1	
 Return
@@ -261,7 +263,6 @@ Setup:
 	Gui, Submit  ; Save each control's contents to its associated variable.
 	;MsgBox You entered:`n%Num%`n%Marca%`n%Cabecera%
 	Gosub, Settings
-	Gosub, LoadItems
 Return
 
 SaveSettings:
@@ -270,7 +271,7 @@ SaveSettings:
 
 	width:= _width
 	height:= _height
-	;gap:= _gap
+	gap:= _gap
 	speed:= _speed
 	density:= _density
 	direction:= _direction - 1
@@ -278,11 +279,11 @@ SaveSettings:
 	etiqueta_1:= _etiqueta_1
 	delay:= _delay
 	date:= _date
-	numEtq:= _numEtq
 	xPos_0:= _xPos_0
 	yPos_0:= _yPos_0
 	xPos_1:= _xPos_1
 	yPos_1:= _yPos_1
+	numEtq:= _numEtqAnt
 
 	if FileExist(script.conf)
 	  Gosub, Iniwrite
