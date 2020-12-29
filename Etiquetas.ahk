@@ -81,9 +81,9 @@ global
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Etiqueta anterior:
-	Gui Main:Add, Edit, vNum x130 y48 w32 h20
+	Gui Main:Add, Edit, vNum x130 y48 w32 h20 +Number
 	Gui Main:Add, Edit, vMarca x130 y88 w32 h20
-	Gui Main:Add, Edit, vEtiquetaAnt x130 y128 w80 h20
+	Gui Main:Add, Edit, vEtiquetaAnt x130 y128 w80 h20 +Number
 	Gui Main:Add, StatusBar,, Fixalia electronic solutions.
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
@@ -91,11 +91,11 @@ global
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Final:
 	Gui Main:Add, Edit, vCabecera x130 y48 w80 h20
-	Gui Main:Add, Edit, vNumIni x130 y88 w64 h20
-	Gui Main:Add, Edit, vNumFin x130 y128 w64 h20
+	Gui Main:Add, Edit, vNumIni x130 y88 w64 h20 +Number
+	Gui Main:Add, Edit, vNumFin x130 y128 w64 h20 +Number
 	Gui Main:Tab
-	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
 	Gui Main:Add, Button, x8 y170 w224 h24, &Imprimir
+	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
 
 	Gui Show, w240 h220, Generador de etiquetas
 Return
@@ -109,11 +109,13 @@ Settings:
 		Gui SettingsDlg: New, +hWndhSettWnd +DelimiterSpace +AlwaysOnTop
 		;SetWindowIcon(hFontDlg, IconLib, 20)
 
-		Gui SettingsDlg:Add, GroupBox, x8 y1 w106 h70, Size
-		Gui SettingsDlg:Add, Text, x16 y18 w35 h20 +0x200, Width:
-		Gui SettingsDlg:Add, Text, x16 y40 w35 h20 +0x200, Height:
+		Gui SettingsDlg:Add, GroupBox, x7 y1 w106 h90, Label
+		Gui SettingsDlg:Add, Text, x15 y18 w35 h20 +0x200, Width:
+		Gui SettingsDlg:Add, Text, x15 y40 w35 h20 +0x200, Height:
+		Gui SettingsDlg:Add, Text, x15 y62 w35 h20 +0x200, Gap:
 		Gui SettingsDlg:Add, Edit, x51 y18 w55 h20 hWndhEdtwidth v_width, 67.75 mm
 		Gui SettingsDlg:Add, Edit, x51 y40 w55 h20 hWndhEdtheight v_height, 5 mm
+		Gui SettingsDlg:Add, Edit, x51 y62 w55 h20 hWndhEdtgap v_gap, 3 mm, 0 mm
 		Gui SettingsDlg:Add, GroupBox, x118 y1 w115 h70, Coordinates
 		Gui SettingsDlg:Add, Text, x124 y18 w16 h20 +0x200, X1:
 		Gui SettingsDlg:Add, Text, x124 y40 w16 h20 +0x200, Y1:
@@ -123,22 +125,23 @@ Settings:
 		Gui SettingsDlg:Add, Text, x178 y40 w16 h20 +0x200, Y2:
 		Gui SettingsDlg:Add, Edit, x195 y18 w32 h20 hWndhEdtxpos_1 v_xPos_1, 435
 		Gui SettingsDlg:Add, Edit, x195 y40 w32 h20 hWndhEdtypos_1 v_yPos_1, 20
-		Gui SettingsDlg:Add, GroupBox, x8 y72 w106 h70, Printer
-		Gui SettingsDlg:Add, Text, x16 y92 w40 h20 +0x200, Speed:
-		Gui SettingsDlg:Add, Edit, x64 y93 w20 h20 +0x1 hWndhEdtspeed v_speed, 2
-		Gui SettingsDlg:Add, Text, x16 y116 w40 h20 +0x200, Density
-		Gui SettingsDlg:Add, Edit, x64 y116 w20 h20 +0x1 hWndhEdtdensity v_density, 6
-		Gui SettingsDlg:Add, GroupBox, x118 y72 w115 h70, Direction
-		Gui SettingsDlg:Add, Radio, hWndhRdirection v_direction x135 y92 w64 h20, Normal
-		Gui SettingsDlg:Add, Radio, , Inverse
-		Gui SettingsDlg:Add, GroupBox, x8 y143 w225 h44, Misc	
-		Gui SettingsDlg:Add, Text, x16 y160 w47 h20 +0x200, Delay ms:
-		Gui SettingsDlg:Add, Edit, x64 y160 w30 h20 hWndhEdtdelay v_delay, 100
-		Gui SettingsDlg:Add, Text, x130 y160 w40 h20 +0x200, Date:
-		Gui SettingsDlg:Add, Edit, x160 y160 w55 h20 hWndhEdtdate v_date, 2100008
-		Gui SettingsDlg:Add, Button, gSaveSettings x68 y194 w80 h23, &Save
-		Gui SettingsDlg:Add, Button, gCancel x152 y194 w80 h23, &Cancel
-		Gui SettingsDlg:Show, w240 h225, Settings
+		Gui SettingsDlg:Add, GroupBox, x7 y92 w106 h68, Printer
+		Gui SettingsDlg:Add, Text, x15 y108 w40 h20 +0x200, Speed:
+		Gui SettingsDlg:Add, Edit, x60 y108 w20 h20 +0x1 hWndhEdtspeed v_speed, 2
+		Gui SettingsDlg:Add, Text, x15 y130 w40 h20 +0x200, Density
+		Gui SettingsDlg:Add, Edit, x60 y130 w20 h20 +0x1 hWndhEdtdensity v_density, 6
+		Gui SettingsDlg:Add, GroupBox, x118 y72 w115 h88, Direction
+		Gui SettingsDlg:Add, Radio, hWndhRdirection v_direction x129 y91 w64 h16, Normal
+		Gui SettingsDlg:Add, Radio, w64 h16, Inverse
+		Gui SettingsDlg:Add, Radio, w64 h16 +Disabled, Mirror
+		Gui SettingsDlg:Add, GroupBox, x7 y160 w226 h42, Misc	
+		Gui SettingsDlg:Add, Text, x15 y173 w47 h20 +0x200, Delay ms:
+		Gui SettingsDlg:Add, Edit, x64 y174 w30 h20 hWndhEdtdelay v_delay, 100
+		Gui SettingsDlg:Add, Text, x130 y173 w40 h20 +0x200, Date:
+		Gui SettingsDlg:Add, Edit, x160 y174 w50 h20 hWndhEdtdate v_date, 2100008
+		Gui SettingsDlg:Add, Button, gSaveSettings x68 y206 w80 h23, &Save
+		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
+		Gui SettingsDlg:Show, w240 h235, Settings
 		;pause
 	}
 	Return
@@ -299,6 +302,6 @@ Cancel:
     Gui Main: Show
 Return
 
-GuiClose:
+MainGuiClose:
 Exit:
     ExitApp
