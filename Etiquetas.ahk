@@ -303,20 +303,24 @@ Imprimir:
 	StrEtq:= StrEtq . "DENSITY " . density . "`n"
 	StrEtq:= StrEtq . "DIRECTION " . direction . "`n"
 	StrEtq:= StrEtq . "CLS" . "`n"
-
+	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """
+	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """
+	
 	If (_Tab < 2){
 		If (_marca != ""){
-			StrMarca:= _pMarca . _marca
-		} 
+			strFechaMarca:= "/" . date . _pMarca . _marca
+		}Else{
+			strFechaMarca:= "/" . date
+		}
 		etiqueta_0:= _numEtqAnt
 		nEtq:= _numEtq
 
 		Loop, {
 			StrEtqTmp:= StrEtq
 			
-			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """ . etiqueta_0 . "/" . date . strMarca . """`n"
+			StrEtqTmp:= StrEtqTmp . strParam_0 . etiqueta_0 . strFechaMarca . """`n"
 			etiqueta_0++
-			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """ . etiqueta_0 . "/" . date . strMarca . """`n"
+			StrEtqTmp:= StrEtqTmp . strParam_1 . etiqueta_0 . strFechaMarca . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
 			nEtq-= 2
@@ -338,10 +342,10 @@ Imprimir:
 		Loop, {
 			StrEtqTmp:= StrEtq
 			strEtiqueta:= SubStr(etiqueta_0, -4)
-			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """ . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -4)
-			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """ . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
 			nEtq-= 2
