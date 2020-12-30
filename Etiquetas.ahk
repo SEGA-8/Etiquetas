@@ -93,9 +93,9 @@ global
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Etiquetas:
 	Gui Main:Add, Edit, x105 y48 w97 h20 +0x8 v_cabecera
-	Gui Main:Add, Edit, x105 y88 w55 h20 +Number v_numIni
+	Gui Main:Add, Edit, x105 y88 w37 h20 +Number v_numIni
 	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x170 y88 w32 h20 +Checked, /
+	Gui Main:Add, Checkbox, x150 y88 w32 h20 +Checked v_separar, /
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -334,7 +334,7 @@ Imprimir:
 	}Else{
 		etiqueta_0:= _numIni + 100000
 		nEtq:= _numEtqSimples
-		If (separador){
+		If (_separar){
 			StrCabecera:= _cabecera . "/"
 		}Else{
 			StrCabecera:= _cabecera . " "
