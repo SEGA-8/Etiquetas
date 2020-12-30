@@ -63,10 +63,10 @@ offset:= 5
 ;[Main]{
 ;Gosub, Menu
 
-if FileExist(script.conf)
+;if FileExist(script.conf)
 	Gosub, Iniread
-Else
-	Gosub, Settings
+;Else
+;	Gosub, Settings
 
 MainGui()
 
@@ -192,7 +192,7 @@ return
 
 Iniread:
 If !FileExist(script.conf){
-	MsgBox, ,Atención, No existe archivo de configuración; se creará uno por defecto.,5
+	MsgBox, 0x1030, Atención, No existe archivo de configuración; se creará uno por defecto.,10
 	width:= "67.75 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
