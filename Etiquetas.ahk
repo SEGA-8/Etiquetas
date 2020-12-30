@@ -91,10 +91,10 @@ global
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
-	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Final:
-	Gui Main:Add, Edit, x90 y48 w80 h20 vCabecera
-	Gui Main:Add, Edit, x90 y88 w55 h20 +Number v_numIni
-	Gui Main:Add, Edit, x90 y128 w55 h20 +Number v_numFin
+	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x105 y48 w97 h20 vCabecera
+	Gui Main:Add, Edit, x105 y88 w55 h20 +Number v_numIni
+	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -239,9 +239,9 @@ If !FileExist(script.conf){
 	IniRead, yPos_0,% script.conf,Settings,yPos_0
 	IniRead, xPos_1,% script.conf,Settings,xPos_1
 	IniRead, yPos_1,% script.conf,Settings,yPos_1
-	IniRead, numEtqAnt,% script.conf,Temp,numEtq
-	;IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
-	;IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
+	IniRead, numEtqAnt,% script.conf,Label,numEtq
+	;IniRead, etiqueta_0,% script.conf,Label,etiqueta_0
+	;IniRead, etiqueta_1,% script.conf,Label,etiqueta_1
 
 return
 
@@ -261,9 +261,9 @@ Iniwrite:
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
 	FileAppend, `n, % script.conf
-	IniWrite, %numEtqAnt%, % script.conf, Temp, numEtq
-	;IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
-	;IniWrite, %etiqueta_1%, % script.conf, Temp, etiqueta_1	
+	IniWrite, %numEtqAnt%, % script.conf, Label, numEtq
+	;IniWrite, %etiqueta_0%, % script.conf, Label, etiqueta_0
+	;IniWrite, %etiqueta_1%, % script.conf, Label, etiqueta_1	
 Return
 
 
@@ -332,16 +332,26 @@ Imprimir:
 			Sleep, delay
 			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 		} Until nEtq < 1
-		;FileAppend, %StrEtq%, % ptrLabelFile
-	;StrEtq:= ""
-	Gosub, Iniwrite
+		;StrEtq:= ""
+		Gosub, Iniwrite
 	}Else{
-		writeFileEtq(StrEtqTmp,ptrLabelFile) 
-
+		Loop, {
+			StrEtqTmp:= StrEtq
+			
+			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """ . etiqueta_0 . "/" . date . strMarca . """`n"
+			etiqueta_1:= ++etiqueta_0
+			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """ . etiqueta_1 . "/" . date . strMarca . """`n"
+			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+			etiqueta_0++
+			nEtq-= 2
+			writeFileEtq(StrEtqTmp,ptrLabelFile)
+			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+		} Until nEtq < 1
 	}
 	StrMarca:= ""
 	MsgBox %StrEtqTmp%
-	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
+	IniWrite, %etiqueta_0%, % script.conf, Label, etiqueta_0
 Return
 
 writeFileEtq(strEtq,tempF:=""){
