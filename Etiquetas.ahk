@@ -192,7 +192,7 @@ return
 Iniread:
 If !FileExist(script.conf){
 	MsgBox, ,Configuración, No existe archivo de configuración; se creará uno por defecto.,5
-	filename:= "Etiquetas.txt"
+	;ptrLabelFile:= "Etiquetas.txt"
 	width:= "67.75 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
@@ -211,7 +211,7 @@ If !FileExist(script.conf){
 	ini:= "`;" . script.name . "`n"
 	ini:= ini . "`;Configuración inicial de la Impresora.`n"
 	ini:= ini . "`n"
-	ini:= ini . "`;filename`t`tNombre del archivo de Etiquetas en formato de texto plano .txt`n"
+	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de Etiquetas en formato de texto plano .txt`n"
 	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5 mm,`n"
 	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. 3mm, 0 mm.`n"
 	ini:= ini . "`;speed`t`t`tVelocidad de impresión. 2`n"
@@ -226,7 +226,7 @@ If !FileExist(script.conf){
 	Gosub, Iniwrite
 }
 
-	IniRead, filename,% script.conf, Settings, filename
+	;IniRead, ptrLabelFile,% script.conf, Settings, ptrLabelFile
 	IniRead, width,% script.conf, Settings, width
 	IniRead, height,% script.conf, Settings, height
 	IniRead, gap ,% script.conf,Settings, gap
@@ -240,14 +240,14 @@ If !FileExist(script.conf){
 	IniRead, xPos_1,% script.conf,Settings,xPos_1
 	IniRead, yPos_1,% script.conf,Settings,yPos_1
 	IniRead, numEtqAnt,% script.conf,Temp,numEtq
-	IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
+	;IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
 	;IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
 
 return
 
 
 Iniwrite:
-	IniWrite, %filename%, % script.conf, Settings, filenames
+	;IniWrite, %ptrLabelFile%, % script.conf, Settings, ptrLabelFile
 	IniWrite, %width%, % script.conf, Settings, width
 	IniWrite, %height%, % script.conf, Settings, height
 	IniWrite, %gap%, % script.conf, Settings, gap
@@ -262,7 +262,7 @@ Iniwrite:
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
 	FileAppend, `n, % script.conf
 	IniWrite, %numEtqAnt%, % script.conf, Temp, numEtq
-	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
+	;IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
 	;IniWrite, %etiqueta_1%, % script.conf, Temp, etiqueta_1	
 Return
 
@@ -328,24 +328,24 @@ Imprimir:
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
 			nEtq-= 2
-			writeFileEtq(StrEtqTmp,filename)
+			writeFileEtq(StrEtqTmp,ptrLabelFile)
 			Sleep, delay
-			RunWait %ComSpec% /c copy "%filename%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 		} Until nEtq < 1
-		;FileAppend, %StrEtq%, % filename
+		;FileAppend, %StrEtq%, % ptrLabelFile
 	;StrEtq:= ""
 	Gosub, Iniwrite
 	}Else{
+		writeFileEtq(StrEtqTmp,ptrLabelFile) 
 
 	}
 	StrMarca:= ""
 	MsgBox %StrEtqTmp%
 	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
-	writeFileEtq(StrEtq,filename) 
 Return
 
 writeFileEtq(strEtq,tempF:=""){
-	;global                 ;Introduce los datos en el archivo etiquetas.txt	
+	;global
 	file := FileOpen(tempF, "w `n")
 	if !IsObject(file){
 		MsgBox, 16, Etiquetas, Can't open "%tempF%" for writing, exiting.
