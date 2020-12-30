@@ -85,7 +85,7 @@ global
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
 	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
 	Gui Main:Add, Edit, x120 y88 w20 h20 v_pMarca, -N
-	Gui Main:Add, Edit, x142 y88 w20 h20 v_marca
+	Gui Main:Add, Edit, x142 y88 w20 h20 +Number v_marca
 	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_numEtqAnt
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
@@ -192,7 +192,7 @@ return
 
 Iniread:
 If !FileExist(script.conf){
-	MsgBox, ,Configuración, No existe archivo de configuración; se creará uno por defecto.,5
+	MsgBox, ,Atención, No existe archivo de configuración; se creará uno por defecto.,5
 	width:= "67.75 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
@@ -326,9 +326,11 @@ Imprimir:
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
 			Sleep, delay
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+			;RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 		} Until nEtq < 1
 		StrMarca:= ""
+		numEtqAnt:= etiqueta_0
+		Gosub, LoadItems
 		;StrEtq:= ""
 		;Gosub, Iniwrite
 	}Else{
@@ -358,7 +360,7 @@ Imprimir:
 	}
 	StrEtq:= ""
 	MsgBox %StrEtqTmp%
-	IniWrite, %etiqueta_0%, % script.conf, Label, etiqueta_0
+	IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 Return
 
 writeFileEtq(strEtq,tempF:=""){
