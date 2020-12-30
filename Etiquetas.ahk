@@ -54,6 +54,12 @@ global script := { base	:scriptobj
 
 ;}
 
+;[Variables]{
+PtrLabelFile := A_ScriptDir "\PtrLabels.txt"
+PtrLogFile := A_ScriptDir "\PtrLog.txt"
+offset:= 5
+;}
+
 ;[Main]{
 ;Gosub, Menu
 
@@ -62,9 +68,6 @@ if FileExist(script.conf)
 Else
 	Gosub, Settings
 
-
-offset:= 5
-;tempFile := "DatosEtiqueta.txt"
 MainGui()
 
 Return                      
@@ -80,17 +83,18 @@ global
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
-	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_NumEtq
-	Gui Main:Add, Edit, x120 y88 w28 h20 v_Marca, N
-	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_NumEtqAnt
+	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
+	Gui Main:Add, Edit, x120 y88 w20 h20 v_pMarca, -N
+	Gui Main:Add, Edit, x142 y88 w20 h20 v_marca
+	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_numEtqAnt
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Final:
 	Gui Main:Add, Edit, x90 y48 w80 h20 vCabecera
-	Gui Main:Add, Edit, x90 y88 w55 h20 +Number v_NumIni
-	Gui Main:Add, Edit, x90 y128 w55 h20 +Number v_NumFin
+	Gui Main:Add, Edit, x90 y88 w55 h20 +Number v_numIni
+	Gui Main:Add, Edit, x90 y128 w55 h20 +Number v_numFin
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -154,7 +158,6 @@ LoadItems:
 	;ControlSetText,, %width%, ahk_id %hEdtwidth%
 	;MainWindow
 	StStr:= "`t" . numEtqAnt
-	MsgBox %StStr%
 	SB_SetText(StStr,2)
 	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
 	;SettingsDlgWindow
@@ -196,11 +199,11 @@ If !FileExist(script.conf){
 	speed:= "2"
 	density:= "6"
 	direction:= "1"
-	etiqueta_0:= "000000"
-	etiqueta_1:= "000001"
+	;etiqueta_0:= "000000"
+	;etiqueta_1:= "000001"
 	delay:= "100"
 	date:= "2100008"
-	numEtqAnt:= "00000001"
+	numEtqAnt:= "10000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -238,13 +241,13 @@ If !FileExist(script.conf){
 	IniRead, yPos_1,% script.conf,Settings,yPos_1
 	IniRead, numEtqAnt,% script.conf,Temp,numEtq
 	IniRead, etiqueta_0,% script.conf,Temp,etiqueta_0
-	IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
+	;IniRead, etiqueta_1,% script.conf,Temp,etiqueta_1
 
 return
 
 
 Iniwrite:
-	IniWrite, %filename%, % script.conf, Settings, filename
+	IniWrite, %filename%, % script.conf, Settings, filenames
 	IniWrite, %width%, % script.conf, Settings, width
 	IniWrite, %height%, % script.conf, Settings, height
 	IniWrite, %gap%, % script.conf, Settings, gap
@@ -260,7 +263,7 @@ Iniwrite:
 	FileAppend, `n, % script.conf
 	IniWrite, %numEtqAnt%, % script.conf, Temp, numEtq
 	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
-	IniWrite, %etiqueta_1%, % script.conf, Temp, etiqueta_1	
+	;IniWrite, %etiqueta_1%, % script.conf, Temp, etiqueta_1	
 Return
 
 
@@ -271,8 +274,8 @@ Setup:
 Return
 
 SaveSettings:
-	Gui, %a_gui%: submit, NoHide
-	Gui,Destroy
+	Gui, %a_gui%: Submit, NoHide
+	Gui, Destroy
 
 	width:= _width
 	height:= _height
@@ -300,16 +303,65 @@ SaveSettings:
 Return
 
 Imprimir:
-	;GuiControlGet, p, Sub-command, ControlID, Param4]
+	Gui, %a_gui%: Submit, NoHide
+	;StrEtq:= ""
+	StrEtq:= "SIZE " . width . ", " . height . "`n"
+	StrEtq:= StrEtq . "GAP " . gap . "`n"
+	StrEtq:= StrEtq . "SPEED " . speed . "`n"
+	StrEtq:= StrEtq . "DENSITY " . density . "`n"
+	StrEtq:= StrEtq . "DIRECTION " . direction . "`n"
+	StrEtq:= StrEtq . "CLS" . "`n"
+
+	If (A_Tab < 2){
+		If (_marca != ""){
+			StrMarca:= _pMarca . _marca
+		} 
+		etiqueta_0:= _numEtqAnt
+		nEtq:= _numEtq
+
+		Loop, {
+			StrEtqTmp:= StrEtq
+			
+			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """ . etiqueta_0 . "/" . date . strMarca . """`n"
+			etiqueta_1:= ++etiqueta_0
+			StrEtqTmp:= StrEtqTmp . "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """ . etiqueta_1 . "/" . date . strMarca . """`n"
+			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+			etiqueta_0++
+			nEtq-= 2
+			writeFileEtq(StrEtqTmp,filename)
+			Sleep, delay
+			RunWait %ComSpec% /c copy "%filename%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+		} Until nEtq < 1
+		;FileAppend, %StrEtq%, % filename
+	;StrEtq:= ""
+	Gosub, Iniwrite
+	}Else{
+
+	}
+	StrMarca:= ""
+	MsgBox %StrEtqTmp%
+	IniWrite, %etiqueta_0%, % script.conf, Temp, etiqueta_0
+	writeFileEtq(StrEtq,filename) 
 Return
+
+writeFileEtq(strEtq,tempF:=""){
+	;global                 ;Introduce los datos en el archivo etiquetas.txt	
+	file := FileOpen(tempF, "w `n")
+	if !IsObject(file){
+		MsgBox, 16, Etiquetas, Can't open "%tempF%" for writing, exiting.
+		return
+	}
+	file.Write(strEtq)
+	file.Close()
+	return 1
+}
 
 SettingsDlgGuiClose:
 Cancel:
 	Gui SettingsDlg: Cancel
-	;	If (WinExist("ahk_id " . hMainWnd)) {
-    ;    Gui Main: Show
-    ;}
-    Gui Main: Show
+		If (WinExist("ahk_id " . hMainWnd)) {
+        Gui Main: Show
+    }
 Return
 
 MainGuiClose:
