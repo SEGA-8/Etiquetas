@@ -57,11 +57,12 @@ global script := { base	:scriptobj
 ;[Variables]{
 PtrLabelFile := A_ScriptDir "\PtrLabels.txt"
 PtrLogFile := A_ScriptDir "\PtrLog.txt"
+;offset control RadioButton
 offset:= 5
 ;}
 
 ;[Main]{
-;Gosub, Menu
+Gosub, Menu
 
 ;if FileExist(script.conf)
 	Gosub, Iniread
@@ -199,7 +200,7 @@ If !FileExist(script.conf){
 	speed:= "2"
 	density:= "6"
 	direction:= "1"
-	delay:= "1800"
+	delay:= "2800"
 	date:= "2100001"
 	numEtqAnt:= "20000000"
 	xPos_0:= "170"
@@ -210,14 +211,14 @@ If !FileExist(script.conf){
 	ini:= ini . "`;Configuración inicial de la Impresora.`n"
 	ini:= ini . "`n"
 	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de Etiquetas en formato de texto plano .txt`n"
-	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5 mm,`n"
+	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5.1 mm,`n"
 	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. 3mm, 0 mm.`n"
 	ini:= ini . "`;speed`t`t`tVelocidad de impresión. 2`n"
 	ini:= ini . "`;density`t`tDensidad de impresión. 6`n"
 	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
-	ini:= ini . "`;delay`t`t`tRetardo entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
+	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
-	ini:= ini . "`;xPos yPos`t`tCoordenadas de las etiquetas.`n"
+	ini:= ini . "`;xPos yPos`t`tCoordenadas de ipresion en las etiquetas.`n"
 	ini:= ini . "`n"
 	FileAppend, %ini%, % script.conf
 	ini:= ""
