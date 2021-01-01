@@ -30,6 +30,9 @@
  * -----------------------------------------------------------------------------------------------
  *
  */
+ ;[Compiler]{
+ 	;@Ahk2Exe-SetMainIcon %A_ScriptDir%\res\Barcode.ico
+ ;}
 ;[Directives]{
 #NoEnv
 #SingleInstance Force
