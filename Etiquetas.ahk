@@ -192,16 +192,16 @@ return
 
 Iniread:
 If !FileExist(script.conf){
-	MsgBox, 0x1030, Atención, No existe archivo de configuración; se creará uno por defecto.,10
+	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	width:= "67.75 mm"
-	height:= "5 mm"
+	height:= "5.1 mm"
 	gap:= "3 mm, 0 mm"
 	speed:= "2"
 	density:= "6"
 	direction:= "1"
-	delay:= "100"
-	date:= "2100008"
-	numEtqAnt:= "10000000"
+	delay:= "1800"
+	date:= "2100001"
+	numEtqAnt:= "20000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -325,8 +325,8 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 			Sleep, delay
-			;RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 		} Until nEtq < 1
 		StrMarca:= ""
 		numEtqAnt:= etiqueta_0
@@ -352,14 +352,13 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			Sleep, delay
 			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+			Sleep, delay
 		} Until nEtq < 1
 		;StrEtq:= ""
 		StrCabecera:= ""
 	}
 	StrEtq:= ""
-	MsgBox %StrEtqTmp%
 	IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 Return
 
