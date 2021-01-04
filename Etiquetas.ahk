@@ -335,8 +335,8 @@ Imprimir:
 		StrMarca:= ""
 		numEtqAnt:= etiqueta_0
 		Gosub, LoadItems
+		IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 		;StrEtq:= ""
-		;Gosub, Iniwrite
 	}Else{
 		etiqueta_0:= _numIni + 100000
 		nEtq:= _numEtqSimples
@@ -359,11 +359,10 @@ Imprimir:
 			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
 			Sleep, delay
 		} Until nEtq < 1
-		;StrEtq:= ""
 		StrCabecera:= ""
+		;StrEtq:= ""
 	}
 	StrEtq:= ""
-	IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 Return
 
 writeFileEtq(strEtq,tempF:=""){
