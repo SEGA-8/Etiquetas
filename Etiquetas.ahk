@@ -198,12 +198,12 @@ Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	width:= "67.75 mm"
-	height:= "5.1 mm"
+	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
 	speed:= "2"
 	density:= "6"
 	direction:= "1"
-	delay:= "2800"
+	delay:= "800"
 	date:= "2100001"
 	numEtqAnt:= "20000000"
 	xPos_0:= "170"
