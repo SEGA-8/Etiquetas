@@ -329,7 +329,7 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 			Sleep, delay
 		} Until nEtq < 1
 		StrMarca:= ""
@@ -354,7 +354,7 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" > "%PtrLogFile%"
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 			Sleep, delay
 		} Until nEtq < 1
 		StrCabecera:= ""
