@@ -342,9 +342,7 @@ Imprimir:
 		nEtq:= _numEtqSimples
 		If (_separar){
 			StrCabecera:= _cabecera . "/"
-		}Else{
-			StrCabecera:= _cabecera . " "
-		}
+
 		Loop, {
 			StrEtqTmp:= StrEtq
 			strEtiqueta:= SubStr(etiqueta_0, -4)
