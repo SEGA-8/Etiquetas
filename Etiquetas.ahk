@@ -343,8 +343,9 @@ Imprimir:
 	}Else{
 		etiqueta_0:= _numIni + 100000
 		nEtq:= _numEtqSimples
-		If (_separar){
-			StrCabecera:= _cabecera . "/"
+		StrCabecera:= _cabecera
+		If (_separar)
+			StrCabecera:= StrCabecera . "/"
 
 		Loop, {
 			StrEtqTmp:= StrEtq
