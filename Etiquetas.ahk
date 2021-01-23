@@ -66,6 +66,7 @@ offset:= 5
 
 ;[Main]{
 Gosub, Menu
+Gosub, FechaEtq
 
 ;if FileExist(script.conf)
 	Gosub, Iniread
@@ -88,8 +89,8 @@ global
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
 	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x120 y88 w20 h20 v_pMarca, -N
-	Gui Main:Add, Edit, x142 y88 w20 h20 +Number v_marca
+	Gui Main:Add, Edit, x120 y88 w36 h20 v_pMarca, -N
+	Gui Main:Add, Edit, x158 y88 w20 h20 +Number v_marca
 	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_numEtqAnt
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
@@ -192,7 +193,15 @@ Menu:
 	Menu, Tray, Default, Settings..
 	Menu, Tray, add
 	Menu, Tray,Add,E&xit,Exit
-return
+Return
+
+FechaEtq:
+	strF:= SubStr(A_now, 3, 2)
+	strFecha:= strF . "000"
+	strFechaNumEtq:= strF . "000000"
+	strF:= SubStr(A_now, 5, 2)
+	strFecha:= strFecha . strF
+Return
 
 Iniread:
 If !FileExist(script.conf){
@@ -204,8 +213,8 @@ If !FileExist(script.conf){
 	density:= "6"
 	direction:= "1"
 	delay:= "800"
-	date:= "2100001"
-	numEtqAnt:= "20000000"
+	date:= strFecha ;"2100001"
+	numEtqAnt:= strFechaNumEtq ;"21000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
