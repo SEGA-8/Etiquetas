@@ -88,8 +88,8 @@ global
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
 	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x120 y88 w20 h20 v_pMarca, -N
-	Gui Main:Add, Edit, x142 y88 w20 h20 +Number v_marca
+	Gui Main:Add, Edit, x120 y88 w36 h20 v_pMarca, -N
+	Gui Main:Add, Edit, x158 y88 w20 h20 +Number v_marca
 	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_numEtqAnt
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
@@ -181,7 +181,6 @@ LoadItems:
 	GuiControl,,%RadioBtn%,1
 Return
 
-
 Menu:
 	Menu, Tray,DeleteAll
 	Menu, Tray, Icon, res/Barcode.ico
@@ -192,7 +191,7 @@ Menu:
 	Menu, Tray, Default, Settings..
 	Menu, Tray, add
 	Menu, Tray,Add,E&xit,Exit
-return
+Return
 
 Iniread:
 If !FileExist(script.conf){
