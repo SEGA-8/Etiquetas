@@ -65,7 +65,7 @@ offset:= 5
 ;}
 
 ;[Main]{
-Gosub, Menu
+;Gosub, Menu
 Gosub, FechaEtq
 
 ;if FileExist(script.conf)
@@ -148,8 +148,9 @@ Settings:
 		Gui SettingsDlg:Add, GroupBox, x7 y160 w226 h42, Misc	
 		Gui SettingsDlg:Add, Text, x15 y173 w47 h20 +0x200, Delay ms:
 		Gui SettingsDlg:Add, Edit, x64 y174 w30 h20 hWndhEdtdelay v_delay, 100
-		Gui SettingsDlg:Add, Text, x130 y173 w40 h20 +0x200, Date:
-		Gui SettingsDlg:Add, Edit, x160 y174 w50 h20 hWndhEdtdate v_date, 2100008
+		Gui SettingsDlg:Add, Text, x105 y173 w40 h20 +0x200, Date:
+		Gui SettingsDlg:Add, Edit, x135 y174 w50 h20 hWndhEdtdate v_date, 2100008
+		Gui SettingsDlg:Add, Checkbox, x188 y173 w40 h20 gActualizaEdit v_autoFecha, Auto
 		Gui SettingsDlg:Add, Button, gSaveSettings x68 y206 w80 h23, &Save
 		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
 		Gui SettingsDlg:Show, w240 h235, Settings
@@ -159,6 +160,15 @@ Settings:
 	}
 	Return
 ;}
+
+ActualizaEdit:
+	Gui, %a_gui%: Submit, NoHide
+	If (_autoFecha)
+		GuiControl, Disable, %hEdtdate%
+	Else
+		GuiControl, Enable, %hEdtdate%
+
+Return
 
 LoadItems:
 	;ControlSetText,, %width%, ahk_id %hEdtwidth%
