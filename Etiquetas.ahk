@@ -150,7 +150,7 @@ Settings:
 		Gui SettingsDlg:Add, Edit, x64 y174 w30 h20 hWndhEdtdelay v_delay, 100
 		Gui SettingsDlg:Add, Text, x105 y173 w40 h20 +0x200, Date:
 		Gui SettingsDlg:Add, Edit, x135 y174 w50 h20 hWndhEdtdate v_date, 2100008
-		Gui SettingsDlg:Add, Checkbox, x188 y173 w40 h20 gActualizaEdit v_autoFecha, Auto
+		Gui SettingsDlg:Add, Checkbox, x188 y173 w40 h20 hWndhCbxAutoFecha gActualizaEdit v_autoFecha, Auto
 		Gui SettingsDlg:Add, Button, gSaveSettings x68 y206 w80 h23, &Save
 		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
 		Gui SettingsDlg:Show, w240 h235, Settings
@@ -184,6 +184,9 @@ LoadItems:
 	GuiControl, Text, %hEdtdensity%, %density%
 	GuiControl, Text, %hEdtdelay%, %delay%
 	GuiControl, Text, %hEdtdate%, %date%
+	if (autoFecha)
+		GuiControl, +Disabled, %hEdtdate%
+	GuiControl, , %hCbxAutoFecha%, %autoFecha%
 	GuiControl, Text, %hEdtxPos_0%, %xPos_0%
 	GuiControl, Text, %hEdtyPos_0%, %yPos_0%
 	GuiControl, Text, %hEdtxPos_1%, %xPos_1%
@@ -223,6 +226,7 @@ If !FileExist(script.conf){
 	direction:= "1"
 	delay:= "800"
 	date:= strFecha ;"2100001"
+	autoFecha:= False
 	numEtqAnt:= strFechaNumEtq ;"21000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
@@ -239,6 +243,7 @@ If !FileExist(script.conf){
 	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
 	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
+	ini:= ini . "`;autoFecha`t`t`tActualiza automáticamente la fecha de la etiqueta.`n"
 	ini:= ini . "`;xPos yPos`t`tCoordenadas de ipresion en las etiquetas.`n"
 	ini:= ini . "`n"
 	FileAppend, %ini%, % script.conf
@@ -246,19 +251,20 @@ If !FileExist(script.conf){
 	Gosub, Iniwrite
 }
 
-	IniRead, width,% script.conf, Settings, width
-	IniRead, height,% script.conf, Settings, height
-	IniRead, gap ,% script.conf,Settings, gap
-	IniRead, speed ,% script.conf,Settings, speed
-	IniRead, density,% script.conf,Settings,density
-	IniRead, direction,% script.conf,Settings,direction
-	IniRead, delay,% script.conf,Settings,delay
-	IniRead, date,% script.conf,Settings,date
-	IniRead, xPos_0,% script.conf,Settings,xPos_0
-	IniRead, yPos_0,% script.conf,Settings,yPos_0
-	IniRead, xPos_1,% script.conf,Settings,xPos_1
-	IniRead, yPos_1,% script.conf,Settings,yPos_1
-	IniRead, numEtqAnt,% script.conf,Label,numEtq
+	IniRead, width, % script.conf, Settings, width
+	IniRead, height, % script.conf, Settings, height
+	IniRead, gap, % script.conf, Settings, gap
+	IniRead, speed, % script.conf, Settings, speed
+	IniRead, density, % script.conf, Settings, density
+	IniRead, direction, % script.conf, Settings, direction
+	IniRead, delay, % script.conf, Settings, delay
+	IniRead, date, % script.conf, Settings, date
+	IniRead, autoFecha, % script.conf, Settings, autoFecha
+	IniRead, xPos_0, % script.conf, Settings, xPos_0
+	IniRead, yPos_0, % script.conf, Settings, yPos_0
+	IniRead, xPos_1, % script.conf, Settings, xPos_1
+	IniRead, yPos_1, % script.conf, Settings, yPos_1
+	IniRead, numEtqAnt, % script.conf, Label, numEtq
 
 return
 
@@ -272,6 +278,7 @@ Iniwrite:
 	IniWrite, %direction%, % script.conf, Settings, direction
 	IniWrite, %delay%, % script.conf, Settings, delay
 	IniWrite, %date%, % script.conf, Settings, date
+	IniWrite, %autoFecha%, % script.conf, Settings, autoFecha
 	IniWrite, %xPos_0%, % script.conf, Settings, xPos_0
 	IniWrite, %yPos_0%, % script.conf, Settings, yPos_0
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
@@ -301,6 +308,7 @@ SaveSettings:
 	etiqueta_1:= _etiqueta_1
 	delay:= _delay
 	date:= _date
+	autoFecha:= _autoFecha
 	xPos_0:= _xPos_0
 	yPos_0:= _yPos_0
 	xPos_1:= _xPos_1
