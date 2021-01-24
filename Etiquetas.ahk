@@ -66,6 +66,7 @@ offset:= 5
 
 ;[Main]{
 Gosub, Menu
+Gosub, FechaEtq
 
 ;if FileExist(script.conf)
 	Gosub, Iniread
@@ -193,6 +194,14 @@ Menu:
 	Menu, Tray,Add,E&xit,Exit
 Return
 
+FechaEtq:
+	strF:= SubStr(A_now, 3, 2)
+	strFecha:= strF . "000"
+	strFechaNumEtq:= strF . "000000"
+	strF:= SubStr(A_now, 5, 2)
+	strFecha:= strFecha . strF
+Return
+
 Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
@@ -203,8 +212,8 @@ If !FileExist(script.conf){
 	density:= "6"
 	direction:= "1"
 	delay:= "800"
-	date:= "2100001"
-	numEtqAnt:= "20000000"
+	date:= strFecha ;"2100001"
+	numEtqAnt:= strFechaNumEtq ;"21000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
