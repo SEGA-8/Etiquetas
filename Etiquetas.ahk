@@ -163,11 +163,13 @@ Settings:
 
 ActualizaEdit:
 	Gui, %a_gui%: Submit, NoHide
-	If (_autoFecha)
+	If (_autoFecha){
+		Gosub, FechaEtq
 		GuiControl, Disable, %hEdtdate%
+		GuiControl, Text, %hEdtdate%, %strFecha%
+	}
 	Else
 		GuiControl, Enable, %hEdtdate%
-
 Return
 
 LoadItems:
