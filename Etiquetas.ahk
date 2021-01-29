@@ -1,4 +1,4 @@
-/*
+﻿/*
  * =============================================================================================== *
  * Author           : SEGA   <simonabad@gmail.com>
  * Script Name      : Generador de etiquetas
