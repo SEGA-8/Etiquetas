@@ -1,4 +1,4 @@
-﻿/*
+/*
  * =============================================================================================== *
  * Author           : SEGA   <simonabad@gmail.com>
  * Script Name      : Generador de etiquetas
@@ -249,7 +249,7 @@ If !FileExist(script.conf){
 	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
 	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
-	ini:= ini . "`;autoFecha`t`t`tActualiza automáticamente la fecha de la etiqueta.`n"
+	ini:= ini . "`;autoFecha`t`tActualiza automáticamente la fecha de la etiqueta.`n"
 	ini:= ini . "`;xPos yPos`t`tCoordenadas de ipresion en las etiquetas.`n"
 	ini:= ini . "`n"
 	FileAppend, %ini%, % script.conf
@@ -378,6 +378,8 @@ Imprimir:
 		StrCabecera:= _cabecera
 		If (_separar)
 			StrCabecera:= StrCabecera . "/"
+		Else
+			StrCabecera:= StrCabecera . "     "
 
 		Loop, {
 			StrEtqTmp:= StrEtq
