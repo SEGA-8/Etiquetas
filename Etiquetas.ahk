@@ -147,10 +147,10 @@ Settings:
 		Gui SettingsDlg:Add, Radio, w64 h16 +Disabled, Mirror
 		Gui SettingsDlg:Add, GroupBox, x7 y160 w226 h42, Misc	
 		Gui SettingsDlg:Add, Text, x15 y173 w47 h20 +0x200, Delay ms:
-		Gui SettingsDlg:Add, Edit, x64 y174 w30 h20 hWndhEdtdelay v_delay, 100
-		Gui SettingsDlg:Add, Text, x105 y173 w40 h20 +0x200, Date:
-		Gui SettingsDlg:Add, Edit, x135 y174 w50 h20 hWndhEdtdate v_date, 2100008
-		Gui SettingsDlg:Add, Checkbox, x188 y173 w40 h20 hWndhCbxAutoFecha gActualizaEditAutoFecha v_autoFecha, Auto
+		Gui SettingsDlg:Add, Edit, x63 y174 w30 h20 hWndhEdtdelay v_delay, 100
+		Gui SettingsDlg:Add, Text, x103 y173 w40 h20 +0x200, Date:
+		Gui SettingsDlg:Add, Edit, x131 y174 w50 h20 hWndhEdtdate v_date, 2100008
+		Gui SettingsDlg:Add, Checkbox, x185 y174 w42 h20 hWndhCbxAutoFecha gActualizaEditAutoFecha v_autoFecha, Auto
 		Gui SettingsDlg:Add, Button, gSaveSettings x68 y206 w80 h23, &Save
 		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
 		Gui SettingsDlg:Show, w240 h235, Settings
