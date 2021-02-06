@@ -96,10 +96,10 @@ global
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Número inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Etiquetas:
-	Gui Main:Add, Edit, x105 y48 w97 h20 +0x8 v_cabecera
-	Gui Main:Add, Edit, x105 y88 w43 h20 +Number v_numIni
-	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x152 y88 w60 h20 v_separar, Separar
+	Gui Main:Add, Edit, x101 y48 w97 h20 +0x8 v_cabecera
+	Gui Main:Add, Edit, x101 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
+	Gui Main:Add, Edit, x101 y128 w25 h20 +Number v_numEtqSimples
+	Gui Main:Add, Checkbox, x148 y88 w70 h20 gActualizaEdit v_noPrint, No imprimir
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -221,6 +221,15 @@ ActualizaEditAutoFecha:
 	}
 	Else
 		GuiControl, Enable, %hEdtdate%
+Return
+
+ActualizaEdit:
+	Gui, %a_gui%: Submit, NoHide
+	If (_noPrint){
+		GuiControl, Disable, %hEdtNumIni%
+	}
+	Else
+		GuiControl, Enable, %hEdtNumIni%
 Return
 
 Iniread:
@@ -381,14 +390,16 @@ Imprimir:
 		etiqueta_0:= _numIni + 1000000
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabecera
-		If (_separar)
-			StrCabecera:= StrCabecera . "    "
 		Loop, {
 			StrEtqTmp:= StrEtq
 			strEtiqueta:= SubStr(etiqueta_0, -5)
+			If (_noPrint)
+				strEtiqueta:= ""
 			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -5)
+			If (_noPrint)
+				strEtiqueta:= ""
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
