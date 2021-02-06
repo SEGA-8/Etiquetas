@@ -86,7 +86,7 @@ global
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
 	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
-	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Numero Etiqueta:
+	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Número Etiqueta:
 	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
 	Gui Main:Add, Edit, x120 y88 w36 h20 v_pMarca, -N
 	Gui Main:Add, Edit, x158 y88 w20 h20 +Number v_marca
@@ -94,12 +94,12 @@ global
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x16 y32 w208 h124,
 	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
-	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Num inicial:
+	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Número inicial:
 	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Etiquetas:
 	Gui Main:Add, Edit, x105 y48 w97 h20 +0x8 v_cabecera
-	Gui Main:Add, Edit, x105 y88 w37 h20 +Number v_numIni
+	Gui Main:Add, Edit, x105 y88 w43 h20 +Number v_numIni
 	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x150 y88 w32 h20 v_separar, Separar
+	Gui Main:Add, Checkbox, x152 y88 w60 h20 v_separar, Separar
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -376,17 +376,19 @@ Imprimir:
 		IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 		;StrEtq:= ""
 	}Else{
-		etiqueta_0:= _numIni + 100000
+		If (_numIni == "")
+			_numIni:= 0
+		etiqueta_0:= _numIni + 1000000
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabecera
 		If (_separar)
 			StrCabecera:= StrCabecera . "    "
 		Loop, {
 			StrEtqTmp:= StrEtq
-			strEtiqueta:= SubStr(etiqueta_0, -4)
+			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
-			strEtiqueta:= SubStr(etiqueta_0, -4)
+			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
