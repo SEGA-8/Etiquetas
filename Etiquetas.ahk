@@ -47,7 +47,7 @@ OnExit, Exit
 ;[Basic Script Info]{
 global script := { base	:scriptobj
 				  ,name			: "Generador de Etiquetas"
-				  ,version		: "0.1.1.1"
+				  ,version		: "0.1.8.1"
 				  ,author		: "SEGA"
 				  ,email		: "simonabad@gmail.com"
 				  ,Homepage		: "http://www.autohotkey.com/"
@@ -65,7 +65,7 @@ offset:= 5
 ;}
 
 ;[Main]{
-;Gosub, Menu
+Gosub, Menu
 
 ;if FileExist(script.conf)
 	Gosub, Iniread
@@ -108,7 +108,7 @@ global
 
 	Gui Show, w240 h220, Generador de etiquetas
 	Gosub, ActualizaFecha
-	Gosub, LoadItems
+	Gosub, LoadItemsMain
 Return
 }
 
@@ -155,18 +155,21 @@ Settings:
 		Gui SettingsDlg:Add, Button, gCancel x152 y206 w80 h23, &Cancel
 		Gui SettingsDlg:Show, w240 h235, Settings
 
-		Gosub, LoadItems
+		Gosub, LoadItemsSettings
 		;pause
 	}
 	Return
 ;}
 
-LoadItems:
+LoadItemsMain:
 	;ControlSetText,, %width%, ahk_id %hEdtwidth%
 	;MainWindow
 	StStr:= "`t" . numEtqAnt
 	SB_SetText(StStr,2)
 	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
+Return
+
+LoadItemsSettings:
 	;SettingsDlgWindow
 	GuiControl, Text, %hEdtwidth%, %width%
 	GuiControl, Text, %hEdtheight%, %height%
@@ -369,7 +372,7 @@ Imprimir:
 		} Until nEtq < 1
 		StrMarca:= ""
 		;numEtqAnt:= etiqueta_0
-		Gosub, LoadItems
+		Gosub, LoadItemsMain
 		IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
 		;StrEtq:= ""
 	}Else{
