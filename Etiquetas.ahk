@@ -99,7 +99,7 @@ global
 	Gui Main:Add, Edit, x105 y48 w97 h20 +0x8 v_cabecera
 	Gui Main:Add, Edit, x105 y88 w37 h20 +Number v_numIni
 	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x150 y88 w32 h20 v_separar, /
+	Gui Main:Add, Checkbox, x150 y88 w32 h20 v_separar, Separar
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -234,9 +234,9 @@ If !FileExist(script.conf){
 	density:= "6"
 	direction:= "1"
 	delay:= "800"
-	date:= strFecha ;"2100001"
+	date:= strFecha ;"aa000mm"
 	autoFecha:= False
-	numEtqAnt:= strFechaNumEtq ;"21000000"
+	numEtqAnt:= strFechaNumEtq ;"aa000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -380,10 +380,7 @@ Imprimir:
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabecera
 		If (_separar)
-			StrCabecera:= StrCabecera . "/"
-		Else
-			StrCabecera:= StrCabecera . "     "
-
+			StrCabecera:= StrCabecera . "    "
 		Loop, {
 			StrEtqTmp:= StrEtq
 			strEtiqueta:= SubStr(etiqueta_0, -4)
