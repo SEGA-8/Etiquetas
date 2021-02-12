@@ -107,7 +107,7 @@ global
 	Gui Main:Add, Edit, x100 y48 w97 h20 +0x8 v_cabSimple
 	Gui Main:Add, Edit, x100 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
 	Gui Main:Add, Edit, x100 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x148 y88 w72 h20 gActualizaEdit v_noPrint, No Imprimir
+	;Gui Main:Add, Checkbox, x148 y88 w72 h20 gActualizaEdit v_noPrint, No Imprimir
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -233,14 +233,14 @@ ActualizaEditAutoFecha:
 		GuiControl, Enable, %hEdtdate%
 Return
 
-ActualizaEdit:
-	Gui, %a_gui%: Submit, NoHide
-	If (_noPrint){
-		GuiControl, Disable, %hEdtNumIni%
-	}
-	Else
-		GuiControl, Enable, %hEdtNumIni%
-Return
+;ActualizaEdit:
+;	Gui, %a_gui%: Submit, NoHide
+;	If (_noPrint){
+;		GuiControl, Disable, %hEdtNumIni%
+;	}
+;	Else
+;		GuiControl, Enable, %hEdtNumIni%
+;Return
 
 Iniread:
 If !FileExist(script.conf){
@@ -425,20 +425,20 @@ Imprimir:
 		IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
 		;StrEtq:= ""
 	}Else{
-		If (_numIni == "")
-			_numIni:= 0
+		;If (_numIni == "")
+		;	_numIni:= 0
 		etiqueta_0:= _numIni + 1000000
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabSimple
 		Loop, {
 			StrEtqTmp:= StrEtq
 			strEtiqueta:= SubStr(etiqueta_0, -5)
-			If (_noPrint)
+			If (_numIni == "")
 				strEtiqueta:= ""
 			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -5)
-			If (_noPrint)
+			If (_numIni == "")
 				strEtiqueta:= ""
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
