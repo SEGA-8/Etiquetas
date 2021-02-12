@@ -90,7 +90,7 @@ global
 	Gui Main:Add, Edit, x115 y128 w28 h20 +Number v_numEtq
 	Gui Main:Add, Edit, x115 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
 	Gui Main:Add, Edit, x115 y88 w36 h20 v_pMarca, -N
-	Gui Main:Add, Edit, x156 y88 w20 h20 +Number v_marca
+	Gui Main:Add, Edit, x156 y88 w25 h20 +Number v_marca
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
 	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Cabecera:
@@ -201,7 +201,7 @@ Return
 
 Menu:
 	Menu, Tray,DeleteAll
-	Menu, Tray, Icon, res/Barcode.ico
+	;Menu, Tray, Icon, res/Barcode.ico
 	Menu, Tray, Tip, % script.name
 	Menu, Tray,NoStandard
 	Menu, Tray, Click, 1
@@ -256,7 +256,7 @@ If !FileExist(script.conf){
 	date:= strFecha ;"aa000mm"
 	autoFecha:= False
 	numEtqAnt:= strFechaNumEtq ;"aa21000000"
-	numEtqRep:= strNumEtqRep
+	numEtqRep:= "000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -293,7 +293,7 @@ If !FileExist(script.conf){
 	IniRead, yPos_0, % script.conf, Settings, yPos_0
 	IniRead, xPos_1, % script.conf, Settings, xPos_1
 	IniRead, yPos_1, % script.conf, Settings, yPos_1
-	IniRead, numEtqAnt, % script.conf, Label, numEtq
+	IniRead, numEtqAnt, % script.conf, Label, numEtqSer
 	IniRead, numEtqRep, % script.conf, Label, numEtqRep
 
 return
@@ -314,7 +314,7 @@ Iniwrite:
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
 	FileAppend, `n, % script.conf
-	IniWrite, %numEtqAnt%, % script.conf, Label, numEtq
+	IniWrite, %numEtqAnt%, % script.conf, Label, numEtqSer
 	IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
 Return
 
@@ -344,7 +344,7 @@ SaveSettings:
 	yPos_0:= _yPos_0
 	xPos_1:= _xPos_1
 	yPos_1:= _yPos_1
-	numEtq:= _numEtqAnt
+	numEtqSer:= _numEtqAnt
 
 	if FileExist(script.conf)
 	  Gosub, Iniwrite
@@ -395,7 +395,7 @@ Imprimir:
 		StrMarca:= ""
 		;numEtqAnt:= etiqueta_0
 		Gosub, loadItemsMain
-		IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
+		IniWrite, %etiqueta_0%, % script.conf, Label, numEtqSer
 		;StrEtq:= ""
 	}Else If (_Tab < 3){
 		If (_numIniRep == "")
