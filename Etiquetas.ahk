@@ -389,8 +389,8 @@ Imprimir:
 			numEtqAnt:= etiqueta_0
 			StStr:= "`t" . numEtqAnt
 			SB_SetText(StStr,2)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 		} Until nEtq < 1
 		StrMarca:= ""
 		;numEtqAnt:= etiqueta_0
@@ -416,8 +416,8 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
 		} Until nEtq < 1
 		StrCabecera:= ""
 		numEtqRep:= SubStr(etiqueta_0, -5)
@@ -425,29 +425,36 @@ Imprimir:
 		IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
 		;StrEtq:= ""
 	}Else{
-		;If (_numIni == "")
-		;	_numIni:= 0
-		etiqueta_0:= _numIni + 1000000
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabSimple
-		Loop, {
-			StrEtqTmp:= StrEtq
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			If (_numIni == "")
-				strEtiqueta:= ""
-			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
-			etiqueta_0++
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			If (_numIni == "")
-				strEtiqueta:= ""
-			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
-			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-			etiqueta_0++
-			nEtq-= 2
-			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
-			Sleep, delay
-		} Until nEtq < 1
+		If (_numIni == ""){
+			Loop, {
+				StrEtqTmp:= StrEtq
+				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . """`n"
+				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . """`n"
+				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+				nEtq-= 2
+				writeFileEtq(StrEtqTmp,ptrLabelFile)
+				Sleep, delay
+				RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
+			} Until nEtq < 1
+		}Else{
+			etiqueta_0:= _numIni + 1000000
+			Loop, {
+				StrEtqTmp:= StrEtq
+				strEtiqueta:= SubStr(etiqueta_0, -5)
+				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
+				etiqueta_0++
+				strEtiqueta:= SubStr(etiqueta_0, -5)
+				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
+				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+				etiqueta_0++
+				nEtq-= 2
+				writeFileEtq(StrEtqTmp,ptrLabelFile)
+				Sleep, delay
+				RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
+			} Until nEtq < 1
+		}
 		StrCabecera:= ""
 		;StrEtq:= ""
 	}
