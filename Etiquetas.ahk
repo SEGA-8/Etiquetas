@@ -89,7 +89,7 @@ global
 	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num de Etiquetas:
 	Gui Main:Add, Edit, x115 y128 w28 h20 +Number v_numEtq
 	Gui Main:Add, Edit, x115 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
-	Gui Main:Add, Edit, x115 y88 w36 h20 v_pMarca, -N
+	Gui Main:Add, Edit, x115 y88 w36 h20 +0x8 v_pMarca, -N
 	Gui Main:Add, Edit, x156 y88 w25 h20 +Number v_marca
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
