@@ -35,6 +35,7 @@
  ;}
 ;[Directives]{
 #NoEnv
+#NoTrayIcon
 #SingleInstance Force
 ; --
 ;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
@@ -65,7 +66,7 @@ offset:= 5
 ;}
 
 ;[Main]{
-Gosub, Menu
+;Gosub, Menu
 
 ;if FileExist(script.conf)
 	Gosub, Iniread
