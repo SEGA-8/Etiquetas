@@ -81,25 +81,33 @@ Return
 MainGui(){
 global
 	Gui Main: New, +hWndhMainWnd
-	Gui Main:Add, Tab3, x7 y8 w225 h158 +AltSubmit v_Tab, Serializador|Etiquetas
+	Gui Main:Add, Tab3, x7 y8 w227 h158 +AltSubmit v_Tab, Serializador|Reparaciones|Simples
 	Gui Main:Tab, 1
-	Gui Main:Add, GroupBox, x16 y32 w208 h124,
-	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Num de Etiquetas:
-	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Marca de LED's:
-	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Número Etiqueta:
-	Gui Main:Add, Edit, x120 y48 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x120 y88 w36 h20 v_pMarca, -N
-	Gui Main:Add, Edit, x158 y88 w20 h20 +Number v_marca
-	Gui Main:Add, Edit, x120 y128 w55 h20 +Number hWndhEdtnumEtq v_numEtqAnt
+	Gui Main:Add, GroupBox, x14 y32 w211 h124,
+	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Siguente Etiqueta:
+	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Marca de LED's:
+	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num de Etiquetas:
+	Gui Main:Add, Edit, x115 y128 w28 h20 +Number v_numEtq
+	Gui Main:Add, Edit, x115 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
+	Gui Main:Add, Edit, x115 y88 w36 h20 v_pMarca, -N
+	Gui Main:Add, Edit, x156 y88 w25 h20 +Number v_marca
 	Gui Main:Tab, 2
-	Gui Main:Add, GroupBox, x16 y32 w208 h124,
-	Gui Main:Add, Text, x28 y48 w88 h20 +0x200, Cabecera:
-	Gui Main:Add, Text, x28 y88 w88 h20 +0x200, Número inicial:
-	Gui Main:Add, Text, x28 y128 w88 h20 +0x200, Num Etiquetas:
-	Gui Main:Add, Edit, x105 y48 w97 h20 +0x8 v_cabecera
-	Gui Main:Add, Edit, x105 y88 w43 h20 +Number v_numIni
-	Gui Main:Add, Edit, x105 y128 w25 h20 +Number v_numEtqSimples
-	Gui Main:Add, Checkbox, x152 y88 w60 h20 v_separar, Separar
+	Gui Main:Add, GroupBox, x14 y32 w211 h124,
+	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Cabecera:
+	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Numero inicial:
+	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x100 y128 w25 h20 +Number v_numEtqRep
+	Gui Main:Add, Edit, x100 y48 w22 h20 +0x8 v_cabRep, RB
+	Gui Main:Add, Edit, x100 y88 w43 h20 +Number hWndhEdtnumEtqRep v_numIniRep
+	Gui Main:Tab, 3
+	Gui Main:Add, GroupBox, x14 y32 w211 h124,
+	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Cabecera:
+	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Número inicial:
+	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x100 y48 w97 h20 +0x8 v_cabSimple
+	Gui Main:Add, Edit, x100 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
+	Gui Main:Add, Edit, x100 y128 w25 h20 +Number v_numEtqSimples
+	;Gui Main:Add, Checkbox, x148 y88 w72 h20 gActualizaEdit v_noPrint, No Imprimir
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
 	Gui Main:Add, Button, gSetup x212 y6 w20 h20, ...
@@ -166,7 +174,9 @@ LoadItemsMain:
 	;MainWindow
 	StStr:= "`t" . numEtqAnt
 	SB_SetText(StStr,2)
-	GuiControl, Text, %hEdtnumEtq%, %numEtqAnt%
+	GuiControl, Text, %hEdtnumEtqSer%, %numEtqAnt%
+	GuiControl, Text, %hEdtnumEtqRep%, %numEtqRep%
+
 Return
 
 LoadItemsSettings:
@@ -191,7 +201,7 @@ Return
 
 Menu:
 	Menu, Tray,DeleteAll
-	Menu, Tray, Icon, res/Barcode.ico
+	;Menu, Tray, Icon, res/Barcode.ico
 	Menu, Tray, Tip, % script.name
 	Menu, Tray,NoStandard
 	Menu, Tray, Click, 1
@@ -223,6 +233,15 @@ ActualizaEditAutoFecha:
 		GuiControl, Enable, %hEdtdate%
 Return
 
+;ActualizaEdit:
+;	Gui, %a_gui%: Submit, NoHide
+;	If (_noPrint){
+;		GuiControl, Disable, %hEdtNumIni%
+;	}
+;	Else
+;		GuiControl, Enable, %hEdtNumIni%
+;Return
+
 Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
@@ -237,7 +256,8 @@ If !FileExist(script.conf){
 	delay:= "800"
 	date:= strFecha ;"aa000mm"
 	autoFecha:= False
-	numEtqAnt:= strFechaNumEtq ;"aa000000"
+	numEtqAnt:= strFechaNumEtq ;"aa21000000"
+	numEtqRep:= "000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -276,7 +296,8 @@ If !FileExist(script.conf){
 	IniRead, yPos_0, % script.conf, Settings, yPos_0
 	IniRead, xPos_1, % script.conf, Settings, xPos_1
 	IniRead, yPos_1, % script.conf, Settings, yPos_1
-	IniRead, numEtqAnt, % script.conf, Label, numEtq
+	IniRead, numEtqAnt, % script.conf, Label, numEtqSer
+	IniRead, numEtqRep, % script.conf, Label, numEtqRep
 
 return
 
@@ -297,7 +318,8 @@ Iniwrite:
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
 	FileAppend, `n, % script.conf
-	IniWrite, %numEtqAnt%, % script.conf, Label, numEtq
+	IniWrite, %numEtqAnt%, % script.conf, Label, numEtqSer
+	IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
 Return
 
 
@@ -326,7 +348,7 @@ SaveSettings:
 	yPos_0:= _yPos_0
 	xPos_1:= _xPos_1
 	yPos_1:= _yPos_1
-	numEtq:= _numEtqAnt
+	numEtqSer:= _numEtqAnt
 
 	if FileExist(script.conf)
 	  Gosub, Iniwrite
@@ -371,24 +393,24 @@ Imprimir:
 			numEtqAnt:= etiqueta_0
 			StStr:= "`t" . numEtqAnt
 			SB_SetText(StStr,2)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 		} Until nEtq < 1
 		StrMarca:= ""
 		;numEtqAnt:= etiqueta_0
-		Gosub, LoadItemsMain
-		IniWrite, %etiqueta_0%, % script.conf, Label, numEtq
+		Gosub, loadItemsMain
+		IniWrite, %etiqueta_0%, % script.conf, Label, numEtqSer
 		;StrEtq:= ""
-	}Else{
-		If (_numIni == "")
-			_numIni:= 0
-		etiqueta_0:= _numIni + 1000000
-		nEtq:= _numEtqSimples
-		StrCabecera:= _cabecera
-		If (_separar)
-			StrCabecera:= StrCabecera . "    "
+	}Else If (_Tab < 3){
+		If (_numIniRep == "")
+			_numIniRep:= 0
+		etiqueta_0:= _numIniRep + 1000000
+		nEtq:= _numEtqRep
+		StrCabecera:= _cabRep
+		;If (_separar)
+		;	StrCabecera:= StrCabecera . "     "
 		Loop, {
-			StrEtqTmp:= StrEtq
+			StrEtqTmp:= strNumEtqRep
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
@@ -398,9 +420,45 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 		} Until nEtq < 1
+		StrCabecera:= ""
+		numEtqRep:= SubStr(etiqueta_0, -5)
+		Gosub, loadItemsMain
+		IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
+		;StrEtq:= ""
+	}Else{
+		nEtq:= _numEtqSimples
+		StrCabecera:= _cabSimple
+		If (_numIni == ""){
+			Loop, {
+				StrEtqTmp:= StrEtq
+				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . """`n"
+				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . """`n"
+				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+				nEtq-= 2
+				writeFileEtq(StrEtqTmp,ptrLabelFile)
+				Sleep, delay
+				RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+			} Until nEtq < 1
+		}Else{
+			etiqueta_0:= _numIni + 1000000
+			Loop, {
+				StrEtqTmp:= StrEtq
+				strEtiqueta:= SubStr(etiqueta_0, -5)
+				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
+				etiqueta_0++
+				strEtiqueta:= SubStr(etiqueta_0, -5)
+				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
+				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+				etiqueta_0++
+				nEtq-= 2
+				writeFileEtq(StrEtqTmp,ptrLabelFile)
+				Sleep, delay
+				RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+			} Until nEtq < 1
+		}
 		StrCabecera:= ""
 		;StrEtq:= ""
 	}
