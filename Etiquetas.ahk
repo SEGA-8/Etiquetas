@@ -227,6 +227,7 @@ Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	Gosub, ActualizaFecha
+	printer:= "\\FIXALIA002.FIXALIA.LOCAL\TA210"
 	width:= "67.75 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
@@ -244,7 +245,8 @@ If !FileExist(script.conf){
 	ini:= "`;" . script.name . "`n"
 	ini:= ini . "`;Configuración inicial de la Impresora.`n"
 	ini:= ini . "`n"
-	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de Etiquetas en formato de texto plano .txt`n"
+	ini:= ini . "`;printer`t`tRuta y nombre de la impresora de etiquetas, configurada como sólo texto.`n"
+	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de etiquetas en formato de texto plano .txt`n"
 	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5.1 mm,`n"
 	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. 3mm, 0 mm.`n"
 	ini:= ini . "`;speed`t`t`tVelocidad de impresión. 2`n"
@@ -260,6 +262,7 @@ If !FileExist(script.conf){
 	Gosub, Iniwrite
 }
 
+	IniRead, printer, % script.conf, Settings, printer
 	IniRead, width, % script.conf, Settings, width
 	IniRead, height, % script.conf, Settings, height
 	IniRead, gap, % script.conf, Settings, gap
@@ -279,6 +282,7 @@ return
 
 
 Iniwrite:
+	IniWrite, %printer%, % script.conf, Settings, printer
 	IniWrite, %width%, % script.conf, Settings, width
 	IniWrite, %height%, % script.conf, Settings, height
 	IniWrite, %gap%, % script.conf, Settings, gap
@@ -367,7 +371,7 @@ Imprimir:
 			numEtqAnt:= etiqueta_0
 			StStr:= "`t" . numEtqAnt
 			SB_SetText(StStr,2)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 			Sleep, delay
 		} Until nEtq < 1
 		StrMarca:= ""
@@ -394,7 +398,7 @@ Imprimir:
 			etiqueta_0++
 			nEtq-= 2
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "\\ODC0043.ODECO.LOCAL\ta210" ;> "%PtrLogFile%"
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 			Sleep, delay
 		} Until nEtq < 1
 		StrCabecera:= ""
