@@ -13,7 +13,7 @@
  * This small program is a set of "tools" that i use regularly.
  *
  * -----------------------------------------------------------------------------------------------
- * License          :       Copyright ©2010-2016 SEGA <GPLv3>
+ * License          :       Copyright ©2010-2021 SEGA <GPLv3>
  *
  *          This program is free software: you can redistribute it and/or modify
  *          it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ OnExit, Exit
 ;[Basic Script Info]{
 global script := { base	:scriptobj
 				  ,name			: "Generador de Etiquetas"
-				  ,version		: "0.1.8.1"
+				  ,version		: "0.1.2.2"
 				  ,author		: "SEGA"
 				  ,email		: "simonabad@gmail.com"
 				  ,Homepage		: "http://www.autohotkey.com/"
@@ -411,7 +411,7 @@ Imprimir:
 		;If (_separar)
 		;	StrCabecera:= StrCabecera . "     "
 		Loop, {
-			StrEtqTmp:= strNumEtqRep
+			StrEtqTmp:= StrEtq . strNumEtqRep
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
