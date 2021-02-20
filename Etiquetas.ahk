@@ -48,7 +48,7 @@ OnExit, Exit
 ;[Basic Script Info]{
 global script := { base	:scriptobj
 				  ,name			: "Generador de Etiquetas"
-				  ,version		: "0.1.2.2"
+				  ,version		: "0.1.2.3"
 				  ,author		: "SEGA"
 				  ,email		: "simonabad@gmail.com"
 				  ,Homepage		: "http://www.autohotkey.com/"
@@ -254,7 +254,7 @@ If !FileExist(script.conf){
 	speed:= "2"
 	density:= "6"
 	direction:= "1"
-	delay:= "800"
+	delay:= "150"
 	date:= strFecha ;"aa000mm"
 	autoFecha:= False
 	numEtqAnt:= strFechaNumEtq ;"aa21000000"
@@ -382,9 +382,7 @@ Imprimir:
 		nEtq:= _numEtq
 
 		Loop, {
-			StrEtqTmp:= StrEtq
-			
-			StrEtqTmp:= StrEtqTmp . strParam_0 . etiqueta_0 . strFechaMarca . """`n"
+			StrEtqTmp:= StrEtq . strParam_0 . etiqueta_0 . strFechaMarca . """`n"
 			etiqueta_0++
 			StrEtqTmp:= StrEtqTmp . strParam_1 . etiqueta_0 . strFechaMarca . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
@@ -411,9 +409,8 @@ Imprimir:
 		;If (_separar)
 		;	StrCabecera:= StrCabecera . "     "
 		Loop, {
-			StrEtqTmp:= StrEtq . strNumEtqRep
 			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtq . strNumEtqRep . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
@@ -434,8 +431,7 @@ Imprimir:
 		StrCabecera:= _cabSimple
 		If (_numIni == ""){
 			Loop, {
-				StrEtqTmp:= StrEtq
-				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . """`n"
+				StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . """`n"
 				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . """`n"
 				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 				nEtq-= 2
@@ -446,9 +442,8 @@ Imprimir:
 		}Else{
 			etiqueta_0:= _numIni + 1000000
 			Loop, {
-				StrEtqTmp:= StrEtq
 				strEtiqueta:= SubStr(etiqueta_0, -5)
-				StrEtqTmp:= StrEtqTmp . strParam_0 . StrCabecera . strEtiqueta . """`n"
+				StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
 				etiqueta_0++
 				strEtiqueta:= SubStr(etiqueta_0, -5)
 				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
