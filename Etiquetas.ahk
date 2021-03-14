@@ -82,32 +82,40 @@ Return
 MainGui(){
 global
 	Gui Main: New, +hWndhMainWnd
-	Gui Main:Add, Tab3, x7 y8 w227 h158 +AltSubmit v_Tab, Serializador|Reparaciones|Simples
+	Gui Main:Add, Tab3, x7 y8 w227 h158 +AltSubmit v_Tab, Serializer|Repair|Simples|Studer
 	Gui Main:Tab, 1
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
-	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Siguente Etiqueta:
-	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Marca de LED's:
-	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num de Etiquetas:
-	Gui Main:Add, Edit, x115 y128 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x115 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
-	Gui Main:Add, Edit, x115 y88 w36 h20 +0x8 v_pMarca, -N
-	Gui Main:Add, Edit, x156 y88 w25 h20 +Number v_marca
+	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Siguente Etiqueta:
+	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Marca de LED's:
+	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num de Etiquetas:
+	Gui Main:Add, Edit, x125 y128 w28 h20 +Number v_numEtq
+	Gui Main:Add, Edit, x125 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
+	Gui Main:Add, Edit, x125 y88 w36 h20 +0x8 v_pMarca, -N
+	Gui Main:Add, Edit, x167 y88 w25 h20 +Number v_marca
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
-	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Cabecera:
-	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Numero inicial:
-	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num Etiquetas:
-	Gui Main:Add, Edit, x100 y128 w25 h20 +Number v_numEtqRep
-	Gui Main:Add, Edit, x100 y48 w22 h20 +0x8 v_cabRep, RB
-	Gui Main:Add, Edit, x100 y88 w43 h20 +Number hWndhEdtnumEtqRep v_numIniRep
+	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
+	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Numero inicial:
+	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqRep
+	Gui Main:Add, Edit, x111 y48 w22 h20 +0x8 v_cabRep, RB
+	Gui Main:Add, Edit, x111 y88 w43 h20 +Number hWndhEdtnumEtqRep v_numIniRep
 	Gui Main:Tab, 3
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
-	Gui Main:Add, Text, x21 y48 w88 h20 +0x200, Cabecera:
-	Gui Main:Add, Text, x21 y88 w88 h20 +0x200, Número inicial:
-	Gui Main:Add, Text, x21 y128 w88 h20 +0x200, Num Etiquetas:
-	Gui Main:Add, Edit, x100 y48 w97 h20 +0x8 v_cabSimple
-	Gui Main:Add, Edit, x100 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
-	Gui Main:Add, Edit, x100 y128 w25 h20 +Number v_numEtqSimples
+	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
+	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Número inicial:
+	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x111 y48 w97 h20 +0x8 v_cabSimple
+	Gui Main:Add, Edit, x111 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
+	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqSimples
+	Gui Main:Tab, 4
+	Gui Main:Add, GroupBox, x14 y32 w211 h124,
+	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
+	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Numero inicial:
+	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num Etiquetas:
+	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqRepSt
+	Gui Main:Add, Edit, x111 y48 w22 h20 +0x8 v_cabRepSt, RS
+	Gui Main:Add, Edit, x111 y88 w43 h20 +Number hWndhEdtnumEtqRepSt v_numIniRepSt
 	;Gui Main:Add, Checkbox, x148 y88 w72 h20 gActualizaEdit v_noPrint, No Imprimir
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
