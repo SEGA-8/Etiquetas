@@ -88,10 +88,10 @@ global
 	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Siguente Etiqueta:
 	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num de Etiquetas:
-	Gui Main:Add, Edit, x125 y128 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x125 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
-	Gui Main:Add, Edit, x125 y88 w36 h20 +0x8 v_pMarca, -N
-	Gui Main:Add, Edit, x167 y88 w25 h20 +Number v_marca
+	Gui Main:Add, Edit, x125 y128 w28 h20 +Number Limit v_numEtq
+	Gui Main:Add, Edit, x125 y48 w55 h20 +Number Limit hWndhEdtnumEtqSer v_numEtqAnt
+	Gui Main:Add, Edit, x125 y88 w36 h20 +0x8 Limit v_pMarca, -N
+	Gui Main:Add, Edit, x167 y88 w25 h20 +Number Limit v_marca
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
 	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
@@ -258,7 +258,7 @@ If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	Gosub, ActualizaFecha
 	printer:= "\\FIXALIA002.FIXALIA.LOCAL\TA210"
-	width:= "67.75 mm"
+	width:= "100 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
 	speed:= "2"
@@ -270,9 +270,9 @@ If !FileExist(script.conf){
 	numEtqAnt:= strFechaNumEtq ;"aa21000000"
 	numEtqRep:= "000000"
 	numEtqRepSt:= "000000"
-	xPos_0:= "170"
+	xPos_0:= "290"
 	yPos_0:= "20"
-	xPos_1:= "435"
+	xPos_1:= "558"
 	yPos_1:= "20"
 	ini:= "`;" . script.name . "`n"
 	ini:= ini . "`;Configuración inicial de la Impresora.`n"
@@ -379,45 +379,45 @@ xPosD_0:= 450
 xPosD_1:= 718
 yPosD_0:= 17
 yPosD_1:= 17
-	StrEtq:= "SIZE " . width . ", " . height . "`n"
+	etiqueta_0:= _numEtqAnt + 1
+	etiqueta_1:= _numEtqAnt + 2
+
+	StrEtq:= "SET COUNTER @0 +1`n" . "SET COUNTER @1 +1`n" . "@0=""" etiqueta_0 """`n" . "@1=""" etiqueta_1 """`n"
+	StrEtq:= StrEtq . "SIZE " . width . ", " . height . "`n"
 	StrEtq:= StrEtq . "GAP " . gap . "`n"
 	StrEtq:= StrEtq . "SPEED " . speed . "`n"
 	StrEtq:= StrEtq . "DENSITY " . density . "`n"
 	StrEtq:= StrEtq . "DIRECTION " . direction . "`n"
 	StrEtq:= StrEtq . "CLS" . "`n"
-	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """
-	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """
+	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, "
+	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, "
 	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, """
 	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, """
 	
 	If (_Tab < 2){
-		If (_marca != ""){
-			strFechaMarca:= "/" . date . _pMarca . _marca
-		}Else{
-			strFechaMarca:= "/" . date
-		}
-		etiqueta_0:= _numEtqAnt
-		nEtq:= _numEtq
+		
+		If (_numEtq <= 1)
+			_numEtq:= 2
 
-		Loop, {
-			StrEtqTmp:= StrEtq . strParam_0 . etiqueta_0 . strFechaMarca . """`n"
-			etiqueta_0++
-			StrEtqTmp:= StrEtqTmp . strParam_1 . etiqueta_0 . strFechaMarca . """`n"
-			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-			etiqueta_0++
-			nEtq-= 2
-			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			numEtqAnt:= etiqueta_0
-			StStr:= "`t" . numEtqAnt
-			SB_SetText(StStr,2)
-			Sleep, delay
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-		} Until nEtq < 1
-		StrMarca:= ""
-		;numEtqAnt:= etiqueta_0
+		If (_marca != ""){
+			strFechaMarca:= """/" . date . _pMarca . _marca
+		}Else{
+			strFechaMarca:= """/" . date
+		}
+			
+		nEtq:= Round(_numEtq / 2)
+
+		StrEtqTmp:= StrEtq . strParam_0 . "@0+" . strFechaMarca . """`n"
+		StrEtqTmp:= StrEtqTmp . strParam_1 . "@1+" . strFechaMarca . """`n"
+		StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
+		writeFileEtq(StrEtqTmp,ptrLabelFile)
+		numEtqAnt+= _numEtq + Mod(_numEtq, 2)
+		StStr:= "`t" . numEtqAnt
+		SB_SetText(StStr,2)
+		Sleep, delay
+		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 		Gosub, loadItemsMain
 		IniWrite, %etiqueta_0%, % script.conf, Label, numEtqSer
-		;StrEtq:= ""
 	}Else If (_Tab < 3){
 		If (_numIniRep == "")
 			_numIniRep:= 0
