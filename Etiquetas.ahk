@@ -428,7 +428,7 @@ yPosD_1:= 17
 		;	StrCabecera:= StrCabecera . "     "
 		Loop, {
 			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtq . strNumEtqRep . strParam_0 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
@@ -483,7 +483,7 @@ yPosD_1:= 17
 		StrCabecera:= _cabRepSt
 		Loop, {
 			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtq . strNumEtqRep . strParam_0 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
 			If (_datamatrix)
 				StrEtqTmp:= StrEtqTmp . strDmatrix_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
