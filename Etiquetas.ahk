@@ -48,12 +48,12 @@ OnExit, Exit
 ;[Basic Script Info]{
 global script := { base	:scriptobj
 				  ,name			: "Generador de Etiquetas"
-				  ,version		: "0.1.2.3"
+				  ,version		: "0.1.3.2"
 				  ,author		: "SEGA"
 				  ,email		: "simonabad@gmail.com"
 				  ,Homepage		: "http://www.autohotkey.com/"
 				  ,crtdate		: "December 24, 2020"
-				  ,moddate		: "July 08, 2021"
+				  ,moddate		: "March 15, 2021"
 				  ,conf			: "Settings.ini"}
 
 ;}
@@ -116,6 +116,7 @@ global
 	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqRepSt
 	Gui Main:Add, Edit, x111 y48 w22 h20 +0x8 v_cabRepSt, RS
 	Gui Main:Add, Edit, x111 y88 w43 h20 +Number hWndhEdtnumEtqRepSt v_numIniRepSt
+	Gui Main:Add, Checkbox, x148 y132 v_datamatrix, Datamatrix
 	;Gui Main:Add, Checkbox, x148 y88 w72 h20 gActualizaEdit v_noPrint, No Imprimir
 	Gui Main:Tab
 	Gui Main:Add, Button, x7 y170 w225 h24 gImprimir, &Imprimir
@@ -374,7 +375,10 @@ Return
 
 Imprimir:
 	Gui, %a_gui%: Submit, NoHide
-
+xPosD_0:= 450
+xPosD_1:= 718
+yPosD_0:= 17
+yPosD_1:= 17
 	StrEtq:= "SIZE " . width . ", " . height . "`n"
 	StrEtq:= StrEtq . "GAP " . gap . "`n"
 	StrEtq:= StrEtq . "SPEED " . speed . "`n"
@@ -383,6 +387,8 @@ Imprimir:
 	StrEtq:= StrEtq . "CLS" . "`n"
 	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """
 	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """
+	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, """
+	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, """
 	
 	If (_Tab < 2){
 		If (_marca != ""){
@@ -475,14 +481,16 @@ Imprimir:
 		etiqueta_0:= _numIniRepSt + 1000000
 		nEtq:= _numEtqRepSt
 		StrCabecera:= _cabRepSt
-		;If (_separar)
-		;	StrCabecera:= StrCabecera . "     "
 		Loop, {
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtq . strNumEtqRep . strParam_0 . StrCabecera . strEtiqueta . """`n"
+			If (_datamatrix)
+				StrEtqTmp:= StrEtqTmp . strDmatrix_0 . StrCabecera . strEtiqueta . """`n"
 			etiqueta_0++
 			strEtiqueta:= SubStr(etiqueta_0, -5)
 			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
+			If (_datamatrix)
+				StrEtqTmp:= StrEtqTmp . strDmatrix_1 . StrCabecera . strEtiqueta . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
 			etiqueta_0++
 			nEtq-= 2
