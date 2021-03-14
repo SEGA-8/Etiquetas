@@ -185,6 +185,7 @@ LoadItemsMain:
 	SB_SetText(StStr,2)
 	GuiControl, Text, %hEdtnumEtqSer%, %numEtqAnt%
 	GuiControl, Text, %hEdtnumEtqRep%, %numEtqRep%
+	GuiControl, Text, %hEdtnumEtqRepSt%, %numEtqRepSt%
 
 Return
 
@@ -267,6 +268,7 @@ If !FileExist(script.conf){
 	autoFecha:= False
 	numEtqAnt:= strFechaNumEtq ;"aa21000000"
 	numEtqRep:= "000000"
+	numEtqRepSt:= "000000"
 	xPos_0:= "170"
 	yPos_0:= "20"
 	xPos_1:= "435"
@@ -307,6 +309,7 @@ If !FileExist(script.conf){
 	IniRead, yPos_1, % script.conf, Settings, yPos_1
 	IniRead, numEtqAnt, % script.conf, Label, numEtqSer
 	IniRead, numEtqRep, % script.conf, Label, numEtqRep
+	IniRead, numEtqRepSt, % script.conf, Label, numEtqRepSt
 
 return
 
@@ -329,6 +332,7 @@ Iniwrite:
 	FileAppend, `n, % script.conf
 	IniWrite, %numEtqAnt%, % script.conf, Label, numEtqSer
 	IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
+	IniWrite, %numEtqRepSt%, % script.conf, Label, numEtqRepSt
 Return
 
 
@@ -434,7 +438,7 @@ Imprimir:
 		Gosub, loadItemsMain
 		IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
 		;StrEtq:= ""
-	}Else{
+	}Else If (_Tab < 4){
 		nEtq:= _numEtqSimples
 		StrCabecera:= _cabSimple
 		If (_numIni == ""){
@@ -464,6 +468,32 @@ Imprimir:
 			} Until nEtq < 1
 		}
 		StrCabecera:= ""
+		;StrEtq:= ""
+	}Else{
+		If (_numIniRepSt == "")
+			_numIniRepSt:= 0
+		etiqueta_0:= _numIniRepSt + 1000000
+		nEtq:= _numEtqRepSt
+		StrCabecera:= _cabRepSt
+		;If (_separar)
+		;	StrCabecera:= StrCabecera . "     "
+		Loop, {
+			strEtiqueta:= SubStr(etiqueta_0, -5)
+			StrEtqTmp:= StrEtq . strNumEtqRep . strParam_0 . StrCabecera . strEtiqueta . """`n"
+			etiqueta_0++
+			strEtiqueta:= SubStr(etiqueta_0, -5)
+			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
+			etiqueta_0++
+			nEtq-= 2
+			writeFileEtq(StrEtqTmp,ptrLabelFile)
+			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+		} Until nEtq < 1
+		StrCabecera:= ""
+		numEtqRepSt:= SubStr(etiqueta_0, -5)
+		Gosub, loadItemsMain
+		IniWrite, %numEtqRepSt%, % script.conf, Label, numEtqRepSt
 		;StrEtq:= ""
 	}
 	StrEtq:= ""
