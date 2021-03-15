@@ -35,7 +35,7 @@
  ;}
 ;[Directives]{
 #NoEnv
-#NoTrayIcon
+;#NoTrayIcon
 #SingleInstance Force
 ; --
 ;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
@@ -257,7 +257,7 @@ Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	Gosub, ActualizaFecha
-	printer:= "\\FIXALIA002.FIXALIA.LOCAL\TA210"
+	printer:= "\\FIXALIA003.FIXALIA.LOCAL\TA210"
 	width:= "100 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
@@ -283,11 +283,11 @@ If !FileExist(script.conf){
 	ini:= ini . "`n"
 	ini:= ini . "`;printer`t`tRuta y nombre de la impresora de etiquetas, configurada como sólo texto.`n"
 	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de etiquetas en formato de texto plano .txt`n"
-	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5.1 mm,`n"
-	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. 3mm, 0 mm.`n"
-	ini:= ini . "`;speed`t`t`tVelocidad de impresión. 2`n"
-	ini:= ini . "`;density`t`tDensidad de impresión. 6`n"
-	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
+	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. Por defecto: 100 mm, 5 mm,`n"
+	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. Por defecto: 3mm, 0 mm.`n"
+	ini:= ini . "`;speed`t`t`tVelocidad de impresión. Por defecto: 2`n"
+	ini:= ini . "`;density`t`tDensidad de impresión. Por defecto: 6`n"
+	ini:= ini . "`;direction`t`tDirección de impresión. Por defecto: 1`n"
 	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
 	ini:= ini . "`;autoFecha`t`tActualiza automáticamente la fecha de la etiqueta.`n"
@@ -396,8 +396,8 @@ Imprimir:
 	StrEtq:= StrEtq . "CLS" . "`n"
 	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, "
 	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, "
-	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, """
-	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, """
+	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, "
+	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, "
 	
 	If (_Tab < 2){
 		
@@ -419,7 +419,8 @@ Imprimir:
 		writeFileEtq(StrEtqTmp,ptrLabelFile)
 		Sleep, delay
 		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-		numEtqAnt+= _numEtq + Mod(_numEtq, 2)
+		numEtqAnt:= _numEtqAnt + _numEtq + Mod(_numEtq, 2)
+		MsgBox, , Title, Text, 
 		StStr:= "`t" . numEtqAnt
 		SB_SetText(StStr,2)
 		Gosub, loadItemsMain
@@ -470,9 +471,6 @@ Imprimir:
 			StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" strEtiqueta_0 """`n" . "@1=""" strEtiqueta_1 """`n"
 			StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . """" . StrCabecera . """+@0" . "`n"
 			StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """+@1" . "`n"
-			;StrEtqTmp:= StrEtq . strParam_0 . """" . StrCabecera . strEtiqueta_0 . """`n"
-			;strEtiqueta_1:= SubStr(etiqueta_1, -5)
-			;StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . strEtiqueta_1 . """`n"
 			StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
 			writeFileEtq(StrEtqTmp,ptrLabelFile)
 			Sleep, delay
@@ -495,10 +493,10 @@ Imprimir:
 		StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" strEtiqueta_0 """`n" . "@1=""" strEtiqueta_1 """`n"
 		StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . """" . StrCabecera . """+@0" . "`n"
 		If (_datamatrix)
-			StrEtqTmp:= StrEtqTmp . strDmatrix_0 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtqTmp . strDmatrix_0 . """" . StrCabecera . """+@0" . "`n"
 		StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """+@1" . "`n"
 		If (_datamatrix)
-			StrEtqTmp:= StrEtqTmp . strDmatrix_0 . StrCabecera . strEtiqueta . """`n"
+			StrEtqTmp:= StrEtqTmp . strDmatrix_1 . """" . StrCabecera . """+@1" . "`n"
 		StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
 		writeFileEtq(StrEtqTmp,ptrLabelFile)
 		Sleep, delay
