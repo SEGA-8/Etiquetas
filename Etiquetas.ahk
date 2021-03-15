@@ -35,7 +35,7 @@
  ;}
 ;[Directives]{
 #NoEnv
-;#NoTrayIcon
+#NoTrayIcon
 #SingleInstance Force
 ; --
 ;SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
@@ -420,7 +420,6 @@ Imprimir:
 		Sleep, delay
 		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 		numEtqAnt:= _numEtqAnt + _numEtq + Mod(_numEtq, 2)
-		MsgBox, , Title, Text, 
 		StStr:= "`t" . numEtqAnt
 		SB_SetText(StStr,2)
 		Gosub, loadItemsMain
