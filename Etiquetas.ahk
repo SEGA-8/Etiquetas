@@ -257,8 +257,8 @@ Iniread:
 If !FileExist(script.conf){
 	MsgBox, 0x1030, Atención, No existe archivo de configuración.`nSe creará por defecto., 8
 	Gosub, ActualizaFecha
-	printer:= "\\FIXALIA002.FIXALIA.LOCAL\TA210"
-	width:= "67.75 mm"
+	printer:= "\\FIXALIA003.FIXALIA.LOCAL\TA210"
+	width:= "100 mm"
 	height:= "5 mm"
 	gap:= "3 mm, 0 mm"
 	speed:= "2"
@@ -279,10 +279,10 @@ If !FileExist(script.conf){
 	ini:= ini . "`n"
 	ini:= ini . "`;printer`t`tRuta y nombre de la impresora de etiquetas, configurada como sólo texto.`n"
 	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de etiquetas en formato de texto plano .txt`n"
-	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. 67.75 mm, 5.1 mm,`n"
-	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. 3mm, 0 mm.`n"
-	ini:= ini . "`;speed`t`t`tVelocidad de impresión. 2`n"
-	ini:= ini . "`;density`t`tDensidad de impresión. 6`n"
+	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. Por degecto: 100 mm, 5 mm,`n"
+	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. Por degecto: 3mm, 0 mm.`n"
+	ini:= ini . "`;speed`t`t`tVelocidad de impresión. Por degecto: 2`n"
+	ini:= ini . "`;density`t`tDensidad de impresión. Por degecto: 6`n"
 	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
 	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
