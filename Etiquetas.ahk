@@ -88,10 +88,10 @@ global
 	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Siguente Etiqueta:
 	Gui Main:Add, Text, x32 y88 w88 h20 +0x200, Marca de LED's:
 	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num de Etiquetas:
-	Gui Main:Add, Edit, x125 y128 w28 h20 +Number v_numEtq
-	Gui Main:Add, Edit, x125 y48 w55 h20 +Number hWndhEdtnumEtqSer v_numEtqAnt
-	Gui Main:Add, Edit, x125 y88 w36 h20 +0x8 v_pMarca, -N
-	Gui Main:Add, Edit, x167 y88 w25 h20 +Number v_marca
+	Gui Main:Add, Edit, x125 y128 w28 h20 +Number Limit v_numEtq
+	Gui Main:Add, Edit, x125 y48 w55 h20 +Number Limit hWndhEdtnumEtqSer v_numEtqAnt
+	Gui Main:Add, Edit, x125 y88 w36 h20 +0x8 Limit v_pMarca, -N
+	Gui Main:Add, Edit, x167 y88 w25 h20 +Number Limit v_marca
 	Gui Main:Tab, 2
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
 	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
@@ -107,7 +107,7 @@ global
 	Gui Main:Add, Text, x32 y128 w88 h20 +0x200, Num Etiquetas:
 	Gui Main:Add, Edit, x111 y48 w97 h20 +0x8 v_cabSimple
 	Gui Main:Add, Edit, x111 y88 w43 h20 +Number  hWndhEdtNumIni v_numIni
-	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqSimples
+	Gui Main:Add, Edit, x111 y128 w25 h20 +Number v_numEtqSpl
 	Gui Main:Tab, 4
 	Gui Main:Add, GroupBox, x14 y32 w211 h124,
 	Gui Main:Add, Text, x32 y48 w88 h20 +0x200, Cabecera:
@@ -267,23 +267,27 @@ If !FileExist(script.conf){
 	delay:= "150"
 	date:= strFecha ;"aa000mm"
 	autoFecha:= False
-	numEtqAnt:= strFechaNumEtq ;"aa21000000"
+	numEtqAnt:= strFechaNumEtq ;"aa000000"
 	numEtqRep:= "000000"
 	numEtqRepSt:= "000000"
-	xPos_0:= "170"
+	xPos_0:= "290"
 	yPos_0:= "20"
-	xPos_1:= "435"
+	xPos_1:= "558"
 	yPos_1:= "20"
+	xPosD_0:= "450"
+	xPosD_1:= "718"
+	yPosD_0:= "17"
+	yPosD_1:= "17"
 	ini:= "`;" . script.name . "`n"
 	ini:= ini . "`;Configuración inicial de la Impresora.`n"
 	ini:= ini . "`n"
 	ini:= ini . "`;printer`t`tRuta y nombre de la impresora de etiquetas, configurada como sólo texto.`n"
 	ini:= ini . "`;ptrLabelFile`t`tNombre del archivo de etiquetas en formato de texto plano .txt`n"
-	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. Por degecto: 100 mm, 5 mm,`n"
-	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. Por degecto: 3mm, 0 mm.`n"
-	ini:= ini . "`;speed`t`t`tVelocidad de impresión. Por degecto: 2`n"
-	ini:= ini . "`;density`t`tDensidad de impresión. Por degecto: 6`n"
-	ini:= ini . "`;direction`t`tDirección de impresión. 1`n"
+	ini:= ini . "`;size`t`t`tTamaño de la etiqueta. Por defecto: 100 mm, 5 mm,`n"
+	ini:= ini . "`;gap`t`t`tDistancia entre eqtiquetas. Por defecto: 3mm, 0 mm.`n"
+	ini:= ini . "`;speed`t`t`tVelocidad de impresión. Por defecto: 2`n"
+	ini:= ini . "`;density`t`tDensidad de impresión. Por defecto: 6`n"
+	ini:= ini . "`;direction`t`tDirección de impresión. Por defecto: 1`n"
 	ini:= ini . "`;delay`t`t`tTiempo de espera entre impresiones, aumentar en caso de que se repitan las etiquetas.`n"
 	ini:= ini . "`;date`t`t`tFecha que aparece en lado derecho de la etiqueta.`n"
 	ini:= ini . "`;autoFecha`t`tActualiza automáticamente la fecha de la etiqueta.`n"
@@ -308,6 +312,10 @@ If !FileExist(script.conf){
 	IniRead, yPos_0, % script.conf, Settings, yPos_0
 	IniRead, xPos_1, % script.conf, Settings, xPos_1
 	IniRead, yPos_1, % script.conf, Settings, yPos_1
+	IniRead, xPosD_0, % script.conf, Settings, xPosD_0
+	IniRead, yPosD_0, % script.conf, Settings, yPosD_0
+	IniRead, xPosD_1, % script.conf, Settings, xPosD_1
+	IniRead, yPosD_1, % script.conf, Settings, yPosD_1
 	IniRead, numEtqAnt, % script.conf, Label, numEtqSer
 	IniRead, numEtqRep, % script.conf, Label, numEtqRep
 	IniRead, numEtqRepSt, % script.conf, Label, numEtqRepSt
@@ -330,6 +338,10 @@ Iniwrite:
 	IniWrite, %yPos_0%, % script.conf, Settings, yPos_0
 	IniWrite, %xPos_1%, % script.conf, Settings, xPos_1
 	IniWrite, %yPos_1%, % script.conf, Settings, yPos_1
+	IniWrite, %xPosD_0%, % script.conf, Settings, xPosD_0
+	IniWrite, %yPosD_0%, % script.conf, Settings, yPosD_0
+	IniWrite, %xPosD_1%, % script.conf, Settings, xPosD_1
+	IniWrite, %yPosD_1%, % script.conf, Settings, yPosD_1
 	FileAppend, `n, % script.conf
 	IniWrite, %numEtqAnt%, % script.conf, Label, numEtqSer
 	IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
@@ -375,134 +387,125 @@ Return
 
 Imprimir:
 	Gui, %a_gui%: Submit, NoHide
-xPosD_0:= 450
-xPosD_1:= 718
-yPosD_0:= 17
-yPosD_1:= 17
+
 	StrEtq:= "SIZE " . width . ", " . height . "`n"
 	StrEtq:= StrEtq . "GAP " . gap . "`n"
 	StrEtq:= StrEtq . "SPEED " . speed . "`n"
 	StrEtq:= StrEtq . "DENSITY " . density . "`n"
 	StrEtq:= StrEtq . "DIRECTION " . direction . "`n"
 	StrEtq:= StrEtq . "CLS" . "`n"
-	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, """
-	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, """
-	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, """
-	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, """
+	strParam_0:= "TEXT " . xPos_0 . ", " . yPos_0 . ", ""0"", 0, 8, 8, "
+	strParam_1:= "TEXT " . xPos_1 . ", " . yPos_1 . ", ""0"", 0, 8, 8, "
+	strDmatrix_0:= "DMATRIX " . xPosD_0 . ", " . yPosD_0 . ", 64, 16, X3, a1, "
+	strDmatrix_1:= "DMATRIX " . xPosD_1 . ", " . yPosD_1 . ", 64, 16, X3, a1, "
 	
 	If (_Tab < 2){
+		
+		If (_numEtq <= 1)
+			_numEtq:= 2
+		nEtq:= Round(_numEtq / 2)
+
 		If (_marca != ""){
-			strFechaMarca:= "/" . date . _pMarca . _marca
+			strFechaMarca:= """/" . date . _pMarca . _marca
 		}Else{
-			strFechaMarca:= "/" . date
+			strFechaMarca:= """/" . date
 		}
 		etiqueta_0:= _numEtqAnt
-		nEtq:= _numEtq
-
-		Loop, {
-			StrEtqTmp:= StrEtq . strParam_0 . etiqueta_0 . strFechaMarca . """`n"
-			etiqueta_0++
-			StrEtqTmp:= StrEtqTmp . strParam_1 . etiqueta_0 . strFechaMarca . """`n"
-			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-			etiqueta_0++
-			nEtq-= 2
-			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			numEtqAnt:= etiqueta_0
-			StStr:= "`t" . numEtqAnt
-			SB_SetText(StStr,2)
-			Sleep, delay
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-		} Until nEtq < 1
-		StrMarca:= ""
-		;numEtqAnt:= etiqueta_0
+		etiqueta_1:= _numEtqAnt + 1
+		StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" etiqueta_0 """`n" . "@1=""" etiqueta_1 """`n"
+		StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . "@0+" . strFechaMarca . """`n"
+		StrEtqTmp:= StrEtqTmp . strParam_1 . "@1+" . strFechaMarca . """`n"
+		StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
+		writeFileEtq(StrEtqTmp,ptrLabelFile)
+		Sleep, delay
+		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+		numEtqAnt:= _numEtqAnt + _numEtq + Mod(_numEtq, 2)
+		StStr:= "`t" . numEtqAnt
+		SB_SetText(StStr,2)
 		Gosub, loadItemsMain
-		IniWrite, %etiqueta_0%, % script.conf, Label, numEtqSer
-		;StrEtq:= ""
+		IniWrite, %numEtqAnt%, % script.conf, Label, numEtqSer
+
 	}Else If (_Tab < 3){
-		If (_numIniRep == "")
-			_numIniRep:= 0
-		etiqueta_0:= _numIniRep + 1000000
-		nEtq:= _numEtqRep
+
+		If (_numEtqRep <= 1)
+			_numEtqRep:= 2
+		nEtq:= Round(_numEtqRep / 2)
 		StrCabecera:= _cabRep
-		;If (_separar)
-		;	StrCabecera:= StrCabecera . "     "
-		Loop, {
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
-			etiqueta_0++
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
-			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-			etiqueta_0++
-			nEtq-= 2
-			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			Sleep, delay
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-		} Until nEtq < 1
-		StrCabecera:= ""
+		etiqueta_0:= _numIniRep + 1000000
+		etiqueta_1:= etiqueta_0 + 1
+		strEtiqueta_0:= SubStr(etiqueta_0, -5)
+		strEtiqueta_1:= SubStr(etiqueta_1, -5)
+		StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" strEtiqueta_0 """`n" . "@1=""" strEtiqueta_1 """`n"
+		StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . """" . StrCabecera . """+@0" . "`n"
+		StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """+@1" . "`n"
+		StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
+		writeFileEtq(StrEtqTmp,ptrLabelFile)
+		Sleep, delay
+		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+		etiqueta_0+= _numEtqRep + Mod(_numEtqRep, 2)
 		numEtqRep:= SubStr(etiqueta_0, -5)
 		Gosub, loadItemsMain
 		IniWrite, %numEtqRep%, % script.conf, Label, numEtqRep
-		;StrEtq:= ""
+		StrCabecera:= ""
+
 	}Else If (_Tab < 4){
-		nEtq:= _numEtqSimples
+		if (_numEtqSpl <= 1)
+			_numEtqSpl:= 2
+		nEtq:= Round(_numEtqSpl / 2)
 		StrCabecera:= _cabSimple
+
 		If (_numIni == ""){
-			Loop, {
-				StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . """`n"
-				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . """`n"
-				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-				nEtq-= 2
-				writeFileEtq(StrEtqTmp,ptrLabelFile)
-				Sleep, delay
-				RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-			} Until nEtq < 1
+			StrEtqTmp:= StrEtq . strParam_0 . """" . StrCabecera . """`n"
+			StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """`n"
+			StrEtqTmp:= StrEtqTmp . "PRINT 1," . nEtq . "`n"
+			writeFileEtq(StrEtqTmp,ptrLabelFile)
+			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
 		}Else{
+			
 			etiqueta_0:= _numIni + 1000000
-			Loop, {
-				strEtiqueta:= SubStr(etiqueta_0, -5)
-				StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
-				etiqueta_0++
-				strEtiqueta:= SubStr(etiqueta_0, -5)
-				StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
-				StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-				etiqueta_0++
-				nEtq-= 2
-				writeFileEtq(StrEtqTmp,ptrLabelFile)
-				Sleep, delay
-				RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-			} Until nEtq < 1
+			etiqueta_1:= etiqueta_0 + 1
+			strEtiqueta_0:= SubStr(etiqueta_0, -5)
+			strEtiqueta_1:= SubStr(etiqueta_1, -5)
+			StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" strEtiqueta_0 """`n" . "@1=""" strEtiqueta_1 """`n"
+			StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . """" . StrCabecera . """+@0" . "`n"
+			StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """+@1" . "`n"
+			StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
+			writeFileEtq(StrEtqTmp,ptrLabelFile)
+			Sleep, delay
+			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+			
 		}
 		StrCabecera:= ""
 		;StrEtq:= ""
 	}Else{
-		If (_numIniRepSt == "")
-			_numIniRepSt:= 0
-		etiqueta_0:= _numIniRepSt + 1000000
-		nEtq:= _numEtqRepSt
+
+		If (_numEtqRepSt <= 1)
+			_numEtqRepSt:= 2
+		nEtq:= Round(_numEtqRepSt / 2)
+
 		StrCabecera:= _cabRepSt
-		Loop, {
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtq . strParam_0 . StrCabecera . strEtiqueta . """`n"
-			If (_datamatrix)
-				StrEtqTmp:= StrEtqTmp . strDmatrix_0 . StrCabecera . strEtiqueta . """`n"
-			etiqueta_0++
-			strEtiqueta:= SubStr(etiqueta_0, -5)
-			StrEtqTmp:= StrEtqTmp . strParam_1 . StrCabecera . strEtiqueta . """`n"
-			If (_datamatrix)
-				StrEtqTmp:= StrEtqTmp . strDmatrix_1 . StrCabecera . strEtiqueta . """`n"
-			StrEtqTmp:= StrEtqTmp . "PRINT 1" . "`n"
-			etiqueta_0++
-			nEtq-= 2
-			writeFileEtq(StrEtqTmp,ptrLabelFile)
-			Sleep, delay
-			RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
-		} Until nEtq < 1
-		StrCabecera:= ""
+		etiqueta_0:= _numIniRepSt + 1000000
+		etiqueta_1:= etiqueta_0 + 1
+		strEtiqueta_0:= SubStr(etiqueta_0, -5)
+		strEtiqueta_1:= SubStr(etiqueta_1, -5)
+		StrEtqSt:= "SET COUNTER @0 +2`n" . "SET COUNTER @1 +2`n" . "@0=""" strEtiqueta_0 """`n" . "@1=""" strEtiqueta_1 """`n"
+		StrEtqTmp:= StrEtqSt . StrEtq . strParam_0 . """" . StrCabecera . """+@0" . "`n"
+		If (_datamatrix)
+			StrEtqTmp:= StrEtqTmp . strDmatrix_0 . """" . StrCabecera . """+@0" . "`n"
+		StrEtqTmp:= StrEtqTmp . strParam_1 . """" . StrCabecera . """+@1" . "`n"
+		If (_datamatrix)
+			StrEtqTmp:= StrEtqTmp . strDmatrix_1 . """" . StrCabecera . """+@1" . "`n"
+		StrEtqTmp:= StrEtqTmp . "PRINT " . nEtq . "`n"
+		writeFileEtq(StrEtqTmp,ptrLabelFile)
+		Sleep, delay
+		RunWait %ComSpec% /c copy "%ptrLabelFile%" "%printer%" ;> "%PtrLogFile%"
+		etiqueta_0+= _numEtqRepSt + Mod(_numEtqRepSt, 2)
 		numEtqRepSt:= SubStr(etiqueta_0, -5)
 		Gosub, loadItemsMain
 		IniWrite, %numEtqRepSt%, % script.conf, Label, numEtqRepSt
-		;StrEtq:= ""
+		StrCabecera:= ""
+		
 	}
 	StrEtq:= ""
 Return
